@@ -568,6 +568,8 @@ label {
 
   .task-card {
     width: 70%; /* Breite der Karte */
+    padding-right: 12px;
+    margin-right: unset;
   }
 }
 

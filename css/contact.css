@@ -376,7 +376,6 @@ body {
 .overlay-right {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   width: 62%;
   background-color: white;
   border-top-right-radius: 30px;
@@ -661,6 +660,20 @@ body {
   flex-direction: row !important;
 }
 
+.edit-contact{
+  gap: 5px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 10px;
+}
+
+.edit-contact:hover{
+  background-color: #2a364727;
+}
+
+
 /* ********* Scrollbar CSS ********* */
 /* Firefox */
 .inner-content {
@@ -700,6 +713,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  transform: translate(0,25%);
 }
 
 .center {
@@ -1195,7 +1209,8 @@ label {
   #overlay {
     flex-direction: column;
     align-items: center;
-    top: 41%;
+    top: 45%;
+    height: 80vh;
   }
 
   .action-button-container {
@@ -1246,6 +1261,7 @@ label {
     justify-content: center;
     margin-top: 32px;
     margin-bottom: 30px;
+    padding-right: unset;
   }
 
   .justify-between {
@@ -1258,6 +1274,7 @@ label {
     border-bottom-left-radius: 30px;
     border-top-right-radius: 0px;
     padding: 13px;
+    height: 60vh;
   }
 
   .border {
@@ -1450,6 +1467,7 @@ label {
   #overlay {
     flex-direction: column;
     align-items: center;
+    top: 45%;
   }
 
   .contact-main-container {

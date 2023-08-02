@@ -291,9 +291,9 @@ function giveContactDetailsHTML(name, mail, initials, id, color, phone) {
 
     <div class="flex-row gap-30 align-center">
     <span class="font-size-21">Contact Information</span>
-    <div class="flex-row gap-5 align-center" onclick="showEditCard(${id})">
-      <img src="./assets/img/pen_black.svg" alt="" class="cursor-pointer" />
-      <span class="cursor-pointer">Edit Contact</span>
+    <div class="flex-row cursor-pointer align-center edit-contact" onclick="showEditCard(${id})">
+      <img src="./assets/img/pen_black.svg" alt=""/>
+      <span>Edit Contact</span>
     </div>
   </div>
 
