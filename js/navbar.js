@@ -1,3 +1,4 @@
+
 /**
  * Toggles the display of the logout button and options mobile based on the window width.
  *
@@ -16,6 +17,8 @@ function logout() {
   window.location.href = "index.html";
 }
 
-function renderUsername() {
-  document.getElementById("userName").innerHTML = `${activeUser}`;
+async function renderUsername() {
+  await includeHTML();
+  await init();
+  document.getElementById("userName").innerText = activeUser;
 }

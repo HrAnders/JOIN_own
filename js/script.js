@@ -8,7 +8,6 @@ let activeUser;
  */
 async function init() {
   activeUser = JSON.parse(localStorage.getItem("activeUser")) || [];
-  console.log("Active user:", activeUser);
 }
 
 /**
@@ -31,6 +30,7 @@ async function includeHTML() {
       element.innerHTML = "Page not found";
     }
   }
+  
 }
 
 async function deleteAllUsersFromServer(){

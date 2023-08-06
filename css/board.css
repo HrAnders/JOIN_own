@@ -604,6 +604,11 @@
   width: 100%;
 }
 
+.drag-over{
+  background-color:#2a364770;
+}
+
+
 /* ********* Breakpoints ********* */
 
 @media only screen and (max-width: 1777px) {

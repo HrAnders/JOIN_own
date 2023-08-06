@@ -12,6 +12,7 @@ let categories = [];
  * @returns {Promise<void>} A promise that resolves once the tasks are initialized.
  */
 async function initTasks() {
+  renderUsername();
   await loadTasks();
   await loadUsers();
   renderAssignableContacts();

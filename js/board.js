@@ -7,6 +7,7 @@ let currentDraggedElement;
 
 async function initBoard() {
   clearTasksContainer();
+  renderUsername();
   await loadTasks();
   await loadtoDos();
   await loadInProgress();

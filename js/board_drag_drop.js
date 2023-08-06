@@ -24,6 +24,45 @@ function drag(ev) {
   ev.dataTransfer.setData("text/plain", ev.target.id);
 }
 
+function showHoverEffect(ev) {
+  if (
+    sourceArray == "toDo" &&
+    (ev.target.id == "inProgress" ||
+      ev.target.id == "feedback" ||
+      ev.target.id == "done")
+  ) {
+    ev.target.classList.add("drag-over");
+  }
+  else if (
+    sourceArray == "inProgress" &&
+    (ev.target.id == "toDo" ||
+      ev.target.id == "feedback" ||
+      ev.target.id == "done")
+  ) {
+    ev.target.classList.add("drag-over");
+  }
+  else if (
+    sourceArray == "feedback" &&
+    (ev.target.id == "toDo" ||
+      ev.target.id == "inProgress" ||
+      ev.target.id == "done")
+  ) {
+    ev.target.classList.add("drag-over");
+  }
+  else if (
+    sourceArray == "done" &&
+    (ev.target.id == "toDo" ||
+      ev.target.id == "feedback" ||
+      ev.target.id == "inProgress")
+  ) {
+    ev.target.classList.add("drag-over");
+  }
+}
+
+function hideHoverEffect(ev) {
+  ev.target.classList.remove("drag-over");
+}
+
 async function moveTo(status) {
   let targetArray;
   switch (status) {
@@ -31,28 +70,28 @@ async function moveTo(status) {
       targetArray = toDo;
       getBorderRemoveFunctions();
       isDropSuccessful = true;
-      deleteTaskFromDragged();
+      deleteTaskFromDragged(targetArray);
       initBoard();
       break;
     case "inProgress":
       targetArray = inProgress;
       getBorderRemoveFunctions();
       isDropSuccessful = true;
-      deleteTaskFromDragged();
+      deleteTaskFromDragged(targetArray);
       initBoard();
       break;
     case "feedback":
       targetArray = feedback;
       getBorderRemoveFunctions();
       isDropSuccessful = true;
-      deleteTaskFromDragged();
+      deleteTaskFromDragged(targetArray);
       initBoard();
       break;
     case "done":
       targetArray = done;
       getBorderRemoveFunctions();
       isDropSuccessful = true;
-      deleteTaskFromDragged();
+      deleteTaskFromDragged(targetArray);
       initBoard();
       break;
     default:
@@ -87,22 +126,22 @@ async function getSourceArrayByStatus(status, id) {
   switch (status) {
     case "toDo":
       sourceID = id;
-      sourceArray = "toDo"
+      sourceArray = "toDo";
       //await deleteTaskFromDragged(id, "toDo");
       break;
     case "inProgress":
       sourceID = id;
-      sourceArray = "inProgress"  
-    //await deleteTaskFromDragged(id, "inProgress");
+      sourceArray = "inProgress";
+      //await deleteTaskFromDragged(id, "inProgress");
       break;
     case "feedback":
       sourceID = id;
-      sourceArray = "feedback"  
+      sourceArray = "feedback";
       //await deleteTaskFromDragged(id, "feedback");
       break;
     case "done":
       sourceID = id;
-      sourceArray = "done"  
+      sourceArray = "done";
       //await deleteTaskFromDragged(id, "done");
       break;
     default:
@@ -111,8 +150,8 @@ async function getSourceArrayByStatus(status, id) {
   }
 }
 
-async function deleteTaskFromDragged() {
-  if (isDropSuccessful == true) {
+async function deleteTaskFromDragged(targetArray) {
+  if (isDropSuccessful == true && targetArray !== sourceArray) {
     switch (sourceArray) {
       case "toDo":
         let toDoIndex = toDo.indexOf(sourceID);

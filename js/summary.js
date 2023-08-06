@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function initSummary() {
   await renderGreeting();
+  renderUsername();
   await loadTasks();
   await loadtoDos();
   await loadInProgress();
@@ -45,7 +46,6 @@ async function renderGreeting() {
   document.getElementById("greeting_sentence").innerText = getDaytimeGreeting();
   document.getElementById("greeting_name").innerText = `Guest`;
   activeUser = JSON.parse(localStorage.getItem("activeUser")) || [];
-  console.log("Active user:", activeUser);
   if (activeUser != "Guest") {
     document.getElementById("greeting_name").innerText = activeUser;
   }

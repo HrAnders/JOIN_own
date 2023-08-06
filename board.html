@@ -117,9 +117,12 @@
           <div
             class="drop-area"
             id="toDo"
-            ondrop="moveTo('toDo')"
+            ondrop="moveTo('toDo'); hideHoverEffect(event)"
             ondragover="allowDrop(event)"
             ondragend="getBorderRemoveFunctions();"
+            ondragenter="showHoverEffect(event);"
+            ondragleave="hideHoverEffect(event)"
+
           >
             <!--DropArea TO DO-->
           </div>
@@ -163,9 +166,11 @@
           <div
             class="drop-area"
             id="inProgress"
-            ondrop="moveTo('inProgress')"
+            ondrop="moveTo('inProgress'); hideHoverEffect(event)"
             ondragover="allowDrop(event)"
             ondragend="getBorderRemoveFunctions();"
+            ondragenter="showHoverEffect(event);"
+            ondragleave="hideHoverEffect(event)"
           >
             <!--DropArea IN PROGRESS-->
           </div>
@@ -208,9 +213,11 @@
           <div
             class="drop-area"
             id="feedback"
-            ondrop="moveTo('feedback')"
+            ondrop="moveTo('feedback'); hideHoverEffect(event)"
             ondragover="allowDrop(event)"
             ondragend="getBorderRemoveFunctions();"
+            ondragenter="showHoverEffect(event);"
+            ondragleave="hideHoverEffect(event)"
           >
             <!--DropArea FEEDBACK-->
           </div>
@@ -253,9 +260,11 @@
           <div
             class="drop-area"
             id="done"
-            ondrop="moveTo('done')"
+            ondrop="moveTo('done'); hideHoverEffect(event)"
             ondragover="allowDrop(event)"
             ondragend="getBorderRemoveFunctions();"
+            ondragenter="showHoverEffect(event);"
+            ondragleave="hideHoverEffect(event)"
           >
             <!--DropArea DONE-->
           </div>
