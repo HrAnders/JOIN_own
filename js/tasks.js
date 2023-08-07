@@ -5,6 +5,7 @@ let selectedCategory;
 let currentPrioStatus;
 let selectedColor;
 let categories = [];
+let isNewCategoryOpened = false;
 
 /**
  * Initializes the tasks by loading data, rendering assignable contacts, and rendering the category list.
@@ -25,17 +26,13 @@ async function initTasks() {
  *
  * @returns {Promise<void>} A promise that resolves once the new task is added.
  */
-async function addNewTask() {
+async function addNewTask(status) {
   await setNewTaskID();
   await loadtoDos();
   let taskTitle = document.getElementById("title");
   let taskDescription = document.getElementById("description");
   let taskDueDate = document.getElementById("datePicker");
-  let taskPriority = document.getElementById("priority");
   let taskSub = document.getElementById("subtaskContent");
-  let buttonUrgent = document.getElementById("prioUrgent");
-  let buttonMedium = document.getElementById("prioMedium");
-  let buttonLow = document.getElementById("prioLow");
 
   // Überprüfung, ob alle Felder ausgefüllt sind
   if (
@@ -79,7 +76,6 @@ async function addNewTask() {
     id: currentTaskID,
   });
 
-  let status = "toDo"; // Standardwert: toDo
   const urlParams = new URLSearchParams(window.location.search);
   const urlStatus = urlParams.get("status");
   if (
@@ -102,18 +98,6 @@ async function addNewTask() {
 
   await setItem("tasks", JSON.stringify(tasks));
   await setItem(status, JSON.stringify(eval(status)));
-}
-
-/**
- * Loads the subtasks from the subtasks array and performs actions on each subtask.
- *
- * @returns {Promise<void>} A promise that resolves once the subtasks are loaded.
- */
-async function subTasksLoad() {
-  subtasks = [];
-  for (let i = 0; i < subtasks.length; i++) {
-    const subtask = subtasks[i];
-  }
 }
 
 /**
@@ -198,7 +182,7 @@ async function addNewSubTask() {
   for (let i = 0; i < subtasks.length; i++) {
     let task = subtasks[i]["task"];
     subtaskContent.innerHTML += `
-    <div>${task}</div>`;
+    <div>${i + 1}. ${task}</div>`;
   }
 }
 
@@ -517,19 +501,19 @@ function renderCategoryList() {
   );
   categoryListContainer.innerHTML = "";
   categoryListContainer.innerHTML += `
-  <div class="dropdown-object" onclick="renderNewCategoryField()">
+  <div class="dropdown-object" onclick="renderNewCategoryField(); toggleDropdownCategory()">
     <div id="newCategory">New category</div>  
   </div>
 
 
-    <div class="dropdown-object" onclick="saveSelectedCategory(this, '${"red"}')">
+    <div class="dropdown-object" onclick="saveSelectedCategory(this, '${"red"}'); toggleDropdownCategory()">
     <div class="flex-row">
       <span>Backoffice</span>
       <div class="category-color margin-left-10" style="background-color: red" id="backofficeField"></div>
     </div>
   </div>
   
-  <div class="dropdown-object" onclick="saveSelectedCategory(this, '${"pink"}')">
+  <div class="dropdown-object" onclick="saveSelectedCategory(this, '${"pink"}'); toggleDropdownCategory()">
     <div class="flex-row">
       <span>Sales</span>
       <div class="category-color margin-left-10" style="background-color: pink"></div>
@@ -544,6 +528,7 @@ function renderCategoryList() {
  */
 function renderNewCategoryField() {
   let dropdownField = document.getElementById("dropdownMinCategory");
+  isNewCategoryOpened = true;
   document.getElementById("select-color-category").classList.remove("d-none");
 
   dropdownField.innerHTML = /*html*/ `
@@ -551,7 +536,7 @@ function renderNewCategoryField() {
     <input placeholder="Enter new category" id="new-category" class="category-input" onclick="stopDropdown(event)">
 
       <div class="flex-row align-center height-100">
-      <img src="./assets/img/close-button-addtask.svg" onclick="clearSelections()">
+      <img src="./assets/img/close-button-addtask.svg" onclick="clearSelections(); toggleDropdownCategory()">
 
         <div class="vert-border"></div>
         <button class="newCategory" onclick="checkNewCategory(); stopDropdown(event);" type="button"><img
@@ -608,7 +593,7 @@ function hideCategoryDisplay() {
 /**
  * Renders the normal category field in the dropdown menu.
  */
-function renderNormalCategoryField() {
+async function renderNormalCategoryField() {
   document.getElementById("categoryDisplay").style.display = "none";
 
   let dropdownField = document.getElementById("dropdownMinCategory");
@@ -640,6 +625,7 @@ function saveSelectedCategory(element, color) {
 function toggleDropdown() {
   let dropdownContent = document.getElementById("dropdownContent");
   let dropdownMin = document.getElementById("dropdownMin");
+
   dropdownContent.classList.toggle("show");
   dropdownMin.classList.toggle("open");
 }
@@ -742,7 +728,8 @@ function checkNewCategory() {
   if (selectedColor && newCategoryInput.value !== "") {
     selectedCategory = newCategoryInput.value;
     dataField.innerText = newCategoryInput.value;
-    displayCategory(selectedCategory);
+    hideErrorMessage();
+    hideSelectColor();
   } else {
     displayErrorMessage("Please insert a category name and a color!");
   }
@@ -751,24 +738,6 @@ function checkNewCategory() {
   if (newCategoryInput.value === "") {
     hideCategoryDisplay(categoryDisplay);
   }
-}
-
-/**
- * Displays the selected category.
- *
- * @param {string} category - The selected category.
- */
-function displayCategory(category) {
-  const categoryDisplay = document.getElementById("categoryDisplay");
-  const selectedCategory = categoryDisplay.textContent;
-
-  // Check if the selected category is different from the new category
-  if (selectedCategory !== category) {
-    hideCategoryDisplay(categoryDisplay);
-  }
-
-  categoryDisplay.style.display = "block";
-  categoryDisplay.textContent = category;
 }
 
 /**
