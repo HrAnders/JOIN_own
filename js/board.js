@@ -68,7 +68,7 @@ async function loadUsers() {
  * Renders the task cards for the "To Do" status.
  */
 function renderTaskCardToDo() {
-  let toDoContainer = document.getElementById("toDo");
+  let toDoContainer = document.getElementById("toDoTasks");
   let renderedIDs = {};
   for (let i = 0; i < toDo.length; i++) {
     let currentTask = tasks.find((task) => task.id === toDo[i]);
@@ -84,7 +84,7 @@ function renderTaskCardToDo() {
  * Renders the task cards for the "In Progress" status.
  */
 function renderTaskCardProgress() {
-  let progressContainer = document.getElementById("inProgress");
+  let progressContainer = document.getElementById("inProgressTasks");
   let renderedIDs = {};
   for (let i = 0; i < inProgress.length; i++) {
     let currentTask = tasks.find((task) => task.id === inProgress[i]);
@@ -100,7 +100,7 @@ function renderTaskCardProgress() {
  * Renders the task cards for the "Feedback" status.
  */
 function renderTaskCardFeedback() {
-  let feedbackContainer = document.getElementById("feedback");
+  let feedbackContainer = document.getElementById("feedbackTasks");
   let renderedIDs = {};
   for (let i = 0; i < feedback.length; i++) {
     let currentTask = tasks.find((task) => task.id === feedback[i]);
@@ -113,7 +113,7 @@ function renderTaskCardFeedback() {
 }
 
 function renderTaskCardDone() {
-  let doneContainer = document.getElementById("done");
+  let doneContainer = document.getElementById("doneTasks");
   let renderedIDs = {};
   for (let i = 0; i < done.length; i++) {
     let currentTask = tasks.find((task) => task.id === done[i]);
@@ -129,10 +129,10 @@ function renderTaskCardDone() {
  * Renders the task cards for the "Done" status.
  */
 function clearTasksContainer() {
-  let toDoContainer = document.getElementById("toDo");
-  let progressContainer = document.getElementById("inProgress");
-  let feedbackContainer = document.getElementById("feedback");
-  let doneContainer = document.getElementById("done");
+  let toDoContainer = document.getElementById("toDoTasks");
+  let progressContainer = document.getElementById("inProgressTasks");
+  let feedbackContainer = document.getElementById("feedbackTasks");
+  let doneContainer = document.getElementById("doneTasks");
 
   toDoContainer.innerHTML = "";
   progressContainer.innerHTML = "";

@@ -70,28 +70,28 @@ async function moveTo(status) {
       targetArray = toDo;
       getBorderRemoveFunctions();
       isDropSuccessful = true;
-      deleteTaskFromDragged(targetArray);
+      await deleteTaskFromDragged(targetArray);
       initBoard();
       break;
     case "inProgress":
       targetArray = inProgress;
       getBorderRemoveFunctions();
       isDropSuccessful = true;
-      deleteTaskFromDragged(targetArray);
+      await deleteTaskFromDragged(targetArray);
       initBoard();
       break;
     case "feedback":
       targetArray = feedback;
       getBorderRemoveFunctions();
       isDropSuccessful = true;
-      deleteTaskFromDragged(targetArray);
+      await deleteTaskFromDragged(targetArray);
       initBoard();
       break;
     case "done":
       targetArray = done;
       getBorderRemoveFunctions();
       isDropSuccessful = true;
-      deleteTaskFromDragged(targetArray);
+      await deleteTaskFromDragged(targetArray);
       initBoard();
       break;
     default:
@@ -152,6 +152,9 @@ async function getSourceArrayByStatus(status, id) {
 
 async function deleteTaskFromDragged(targetArray) {
   if (isDropSuccessful == true && targetArray !== sourceArray) {
+
+    //document.getElementById('loadingOverlay').classList.remove('d-none')
+
     switch (sourceArray) {
       case "toDo":
         let toDoIndex = toDo.indexOf(sourceID);
@@ -181,6 +184,8 @@ async function deleteTaskFromDragged(targetArray) {
 
         break;
     }
+    //document.getElementById('loadingOverlay').classList.add('d-none')
+
   }
 }
 

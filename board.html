@@ -33,6 +33,10 @@
       w3-include-html="./assets/templates_html/navbar_template.html"
     ></div>
 
+    <div id="loadingOverlay" class="d-none">
+      <img src="assets/img/loading-gif.gif" alt="">
+    </div>
+
     <div class="board-main-container inner-content">
       <span id="headline-mobile" class="headline-text-mobile"
         >Kanban Project Management Tool</span
@@ -114,6 +118,7 @@
               />
             </svg>
           </div>
+          <div id="toDoTasks"></div>
           <div
             class="drop-area"
             id="toDo"
@@ -122,7 +127,6 @@
             ondragend="getBorderRemoveFunctions();"
             ondragenter="showHoverEffect(event);"
             ondragleave="hideHoverEffect(event)"
-
           >
             <!--DropArea TO DO-->
           </div>
@@ -163,6 +167,7 @@
               />
             </svg>
           </div>
+          <div id="inProgressTasks"></div>
           <div
             class="drop-area"
             id="inProgress"
@@ -210,6 +215,7 @@
               />
             </svg>
           </div>
+          <div id="feedbackTasks"></div>
           <div
             class="drop-area"
             id="feedback"
@@ -257,6 +263,7 @@
               />
             </svg>
           </div>
+          <div id="doneTasks"></div>
           <div
             class="drop-area"
             id="done"
