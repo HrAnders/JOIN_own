@@ -123,8 +123,10 @@
               </svg>
             </div>
           </div>
+
           <div class="form-Avatar">
             <img src="./assets/img/avatar_img.svg" class="avatar" />
+
             <div class="form center">
               <form class="new-contact-form" onsubmit="createNewPseudoContact(); return false">
                 <div class="center">
@@ -142,38 +144,38 @@
                 <div class="center">
                   <input class="addTel" required type="tel" id="addTel" placeholder="Phone" pattern="[0-9]+" />
                 </div>
+                <div class="add-close-btn-container">
+                  <div class="cancel-btn" onclick="hideCard()">
+                    <span class="font-size-21">Cancel</span>
+                    <svg
+                      width="31"
+                      height="31"
+                      viewBox="0 0 31 31"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M22.9614 7.65381L7.65367 22.9616"
+                        stroke="#2A3647"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M22.8169 23.106L7.50914 7.7982"
+                        stroke="#2A3647"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </div>
+                  <button class="create-btn" type="submit">
+                    <span class="font-weight-700 font-size-21">Create contact</span>
+                    <img src="./assets/img/add_contact_icon.svg" alt="" />
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
-          <div class="add-close-btn-container">
-            <div class="cancel-btn" onclick="hideCard()">
-              <span class="font-size-21">Cancel</span>
-              <svg
-                width="31"
-                height="31"
-                viewBox="0 0 31 31"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M22.9614 7.65381L7.65367 22.9616"
-                  stroke="#2A3647"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                />
-                <path
-                  d="M22.8169 23.106L7.50914 7.7982"
-                  stroke="#2A3647"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                />
-              </svg>
-            </div>
-            <button class="create-btn" type="submit">
-              <span class="font-weight-700 font-size-21">Create contact</span>
-              <img src="./assets/img/add_contact_icon.svg" alt="" />
-            </button>
-          </div>
-        </form>
         </div>
       </div>
       </div>
