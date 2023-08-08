@@ -1,11 +1,18 @@
 let users = [];
 let currentUserID = 0;
 
+
+/**
+ * This function initializes the login
+ */
 async function init() {
   await loadUsers();
   await loadContacts();
 }
 
+/**
+ * This function loads the users from the server
+ */
 async function loadUsers() {
   try {
     users = JSON.parse(await getItem("users"));
@@ -113,6 +120,19 @@ async function signUpNewUser() {
   let password = document.getElementById("passwordSignup");
   await setNewID();
 
+  pushNewUserData(name, email, password)
+
+  resetForm(name, email, password);
+}
+
+/**
+ * This function pushes the data of the new user to the server
+ * 
+ * @param {string} name 
+ * @param {string} email 
+ * @param {string} password 
+ */
+async function pushNewUserData(name, email, password){
   // Generate random RGB values for color
   let r = Math.floor(Math.random() * 256);
   let g = Math.floor(Math.random() * 256);
@@ -135,10 +155,11 @@ async function signUpNewUser() {
 
   await setItem("users", JSON.stringify(users));
   await setItem("contacts", JSON.stringify(contacts));
-
-  resetForm(name, email, password);
 }
 
+/**
+ * This function provides every user with a new id
+ */
 async function setNewID() {
   let res = JSON.parse(await getItem("currentUserID"));
   if (res) {
@@ -150,6 +171,13 @@ async function setNewID() {
   }
 }
 
+/**
+ * This function resets the input fields
+ * 
+ * @param {string} name 
+ * @param {string} email 
+ * @param {string} password 
+ */
 function resetForm(name, email, password) {
   email.value = "";
   password.value = "";

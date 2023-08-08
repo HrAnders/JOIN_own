@@ -18,6 +18,9 @@ async function renderWithoutActiveSection() {
   renderUsername();
 }
 
+/**
+ * This function loads all html templates (navbar and sidebar)
+ */
 async function includeHTML() {
   let includeElements = document.querySelectorAll("[w3-include-html]");
   for (let i = 0; i < includeElements.length; i++) {
@@ -33,6 +36,9 @@ async function includeHTML() {
   
 }
 
+/**
+ * This function is used to delete all registered users from the server
+ */
 async function deleteAllUsersFromServer(){
   try {
     users = JSON.parse(await getItem("users"));

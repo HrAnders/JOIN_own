@@ -1,3 +1,6 @@
+/**
+ * Handles the hover state of the summary cards
+ */
 document.addEventListener("DOMContentLoaded", function () {
   const BOTTOMCARD1 = document.getElementById("bottomCard1");
   const BOTTOMCARD2 = document.getElementById("bottomCard2");
@@ -25,6 +28,9 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+/**
+ * This function initializes the summary page
+ */
 async function initSummary() {
   await renderGreeting();
   renderUsername();
@@ -68,16 +74,21 @@ function getDaytimeGreeting() {
   }
 }
 
+/**
+ * This function refers to the board page
+ */
 function redirectToBoard() {
   window.location.href = "board.html";
 }
 
+/**
+ * This function counts the tasks of every status
+ */
 function countTasks() {
   let toDoVar = toDo.length;
   let inProgressVar = inProgress.length;
   let feedbackVar = feedback.length;
   let doneVar = done.length;
-
   let totalTasks = tasks.length;
 
   // Anzeige der Variablen in HTML-Elementen
@@ -88,6 +99,9 @@ function countTasks() {
   document.getElementById("doneToDos").innerHTML = doneVar;
 }
 
+/**
+ * This function counts the number of urgent tasks
+ */
 function countUrgent() {
   let urgentCount = 0;
 
@@ -105,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /**
- * users date today
+ * This function gets the current day of the user
  */
 function getCurrentDay() {
   let currentDay = new Date().toLocaleString();
@@ -120,6 +134,12 @@ function getCurrentDay() {
   ).innerHTML = `<strong>${currentDay}</strong>`;
 }
 
+/**
+ * This function gets the current month of the user's calendar
+ * 
+ * @param {number} i 
+ * @returns {date}
+ */
 function getCurrentMonth(i) {
   const date = new Date();
   date.setMonth(i - 1);

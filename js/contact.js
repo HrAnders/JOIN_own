@@ -417,26 +417,28 @@ function giveContactDetailsMobileHTML(name, mail, initials, id, color, phone) {
   `;
 }
 
+/**
+ * This function checks the screen width and handles the popup visibility according to the screen size
+ */
 function checkScreenWidth() {
   document
     .getElementById("addTaskPopUp")
     .addEventListener("click", checkScreenWidth);
 
   var screenWidth = window.innerWidth;
-
-  // Definiere die gewünschte Bildschirmbreite, ab der weitergeleitet wird
   var targetWidth = 1351;
-
-  // Überprüfe, ob die Bildschirmbreite größer oder gleich der Zielbreite ist
   if (screenWidth >= targetWidth) {
-    // Öffne das Pop-up-Fenster hier
     showAddTaskPopUp();
   } else {
-    // Leite zur anderen Seite weiter
     window.location.href = "task_form.html";
   }
 }
 
+/**
+ * This function deletes a contact from the contacts array
+ * 
+ * @param {int} id of the contact
+ */
 async function deleteCard(id) {
   try {
     let contacts = await getItem("contacts");
@@ -470,11 +472,17 @@ function hideEditCard() {
   overlay.classList.add("d-none");
 }
 
+/**
+ * This function shows the contact task overlay by removing the 'd-none' class
+ */
 function showAddTaskPopUp() {
   let overlay = document.getElementById("overlayPopUpbg");
   overlay.classList.remove("d-none");
 }
 
+/**
+ * This function hides the contact task overlay by adding the 'd-none' class
+ */
 function hideAddTaskPopUp() {
   let overlay = document.getElementById("overlayPopUpbg");
   overlay.classList.add("d-none");

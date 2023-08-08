@@ -13,10 +13,17 @@ function toggleLogout() {
   }
 }
 
+
+/**
+ * This function refers to the landing page
+ */
 function logout() {
   window.location.href = "index.html";
 }
 
+/**
+ * This function sets the current users name
+ */
 async function renderUsername() {
   await includeHTML();
   await init();

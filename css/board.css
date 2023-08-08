@@ -649,6 +649,10 @@
     align-items: center;
   }
 
+  .dropdown-position {
+    display: flex;
+  }
+
   .board-task-card {
     width: 58vw;
   }
@@ -748,10 +752,6 @@
 
 @media only screen and (max-width: 500px) {
   #headline-mobile {
-    display: flex;
-  }
-
-  .dropdown-position {
     display: flex;
   }
 

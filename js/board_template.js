@@ -1,5 +1,11 @@
+/**
+ * This function returns the html code for the editTask-window
+ * 
+ * @param {int} currentTask 
+ * @returns {html}
+ */
 function editTaskHTML(currentTask) {
-  return `
+  return /*html*/`
   
     <div id="overlayPopUpbg" class="overlay-board-bg" style="padding:21px">
       
@@ -168,6 +174,12 @@ function editTaskHTML(currentTask) {
       </div>`;
 }
 
+/**
+ * This function returns the html code for the taskDetail-window
+ * 
+ * @param {int} task 
+ * @returns {html}
+ */
 function getTaskDetailCardHTML(task) {
   return /*html*/ `
       

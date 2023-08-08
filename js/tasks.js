@@ -34,34 +34,60 @@ async function addNewTask(status) {
   let taskDueDate = document.getElementById("datePicker");
   let taskSub = document.getElementById("subtaskContent");
 
-  // Überprüfung, ob alle Felder ausgefüllt sind
-  if (
-    taskTitle.value === "" ||
-    taskDescription.value === "" ||
-    taskDueDate.value === "" ||
-    currentPrioStatus === undefined ||
-    selectedCategory === undefined ||
-    taskSub.value === ""
-  ) {
-    // Zeige den Text im Div an, welches Feld ausgefüllt werden muss
-    let taskAlert = document.getElementById("taskAlert");
-    taskAlert.innerHTML = ""; // Leere den vorherigen Text
-    if (taskTitle.value === "")
-      taskAlert.innerHTML += "Feld 'Titel' muss ausgefüllt werden.<br>";
-    if (taskDescription.value === "")
-      taskAlert.innerHTML += "Feld 'Beschreibung' muss ausgefüllt werden.<br>";
-    if (taskDueDate.value === "")
-      taskAlert.innerHTML +=
-        "Feld 'Fälligkeitsdatum' muss ausgefüllt werden.<br>";
-    if (currentPrioStatus === undefined)
-      taskAlert.innerHTML += "Feld 'Priorität' muss ausgefüllt werden.<br>";
-    if (selectedCategory === undefined)
-      taskAlert.innerHTML += "Feld 'Category' muss ausgefüllt werden.<br>";
-    if (taskSub.value === "")
-      taskAlert.innerHTML += "Feld 'Unteraufgabe' muss ausgefüllt werden.<br>";
-    return; // Beende die Funktion, da nicht alle Felder ausgefüllt sind
-  }
+  checkTaskForm(taskTitle, taskDescription, taskDueDate, taskSub);
+  pushTaskData(taskTitle, taskDescription, taskDueDate)
+  await pushTaskToStatus(status);
+  await setItem("tasks", JSON.stringify(tasks));
+  await setItem(status, JSON.stringify(eval(status)));
+}
 
+/**
+ * This function checks if all input fields are filled
+ * 
+ * @param {string} taskTitle 
+ * @param {string} taskDescription 
+ * @param {string} taskDueDate 
+ * @param {string} taskSub 
+ * @returns 
+ */
+function checkTaskForm(taskTitle, taskDescription, taskDueDate, taskSub){
+// Überprüfung, ob alle Felder ausgefüllt sind
+if (
+  taskTitle.value === "" ||
+  taskDescription.value === "" ||
+  taskDueDate.value === "" ||
+  currentPrioStatus === undefined ||
+  selectedCategory === undefined ||
+  taskSub.value === ""
+) {
+  // Zeige den Text im Div an, welches Feld ausgefüllt werden muss
+  let taskAlert = document.getElementById("taskAlert");
+  taskAlert.innerHTML = ""; // Leere den vorherigen Text
+  if (taskTitle.value === "")
+    taskAlert.innerHTML += "Feld 'Titel' muss ausgefüllt werden.<br>";
+  if (taskDescription.value === "")
+    taskAlert.innerHTML += "Feld 'Beschreibung' muss ausgefüllt werden.<br>";
+  if (taskDueDate.value === "")
+    taskAlert.innerHTML +=
+      "Feld 'Fälligkeitsdatum' muss ausgefüllt werden.<br>";
+  if (currentPrioStatus === undefined)
+    taskAlert.innerHTML += "Feld 'Priorität' muss ausgefüllt werden.<br>";
+  if (selectedCategory === undefined)
+    taskAlert.innerHTML += "Feld 'Category' muss ausgefüllt werden.<br>";
+  if (taskSub.value === "")
+    taskAlert.innerHTML += "Feld 'Unteraufgabe' muss ausgefüllt werden.<br>";
+  return; // Beende die Funktion, da nicht alle Felder ausgefüllt sind
+}
+}
+
+/**
+ * This function pushes the task data to the task array on server 
+ * 
+ * @param {string} taskTitle 
+ * @param {string} taskDescription 
+ * @param {date} taskDueDate 
+ */
+function pushTaskData(taskTitle, taskDescription, taskDueDate){
   tasks.push({
     title: taskTitle.value,
     description: taskDescription.value,
@@ -75,7 +101,14 @@ async function addNewTask(status) {
     subtasksClosed: [],
     id: currentTaskID,
   });
+}
 
+/**
+ * This function pushes the task to a certain status
+ * 
+ * @param {*} status 
+ */
+async function pushTaskToStatus(status){
   const urlParams = new URLSearchParams(window.location.search);
   const urlStatus = urlParams.get("status");
   if (
@@ -95,10 +128,9 @@ async function addNewTask(status) {
     taskAddedElement.classList.add("d-none"); // Füge die Klasse "d-none" hinzu, um das Element auszublenden
     redirectToBoard(); // Rufe die Funktion zum Neuladen der Seite auf
   }, 1000); // Warte vier Sekunden (4000 Millisekunden) und führe dann den Code im setTimeout-Callback aus
-
-  await setItem("tasks", JSON.stringify(tasks));
-  await setItem(status, JSON.stringify(eval(status)));
 }
+
+
 
 /**
  * Sets a new task ID by retrieving the current ID, incrementing it, and saving it.
@@ -197,14 +229,8 @@ async function editTaskBoard(id) {
   let taskTitle = document.getElementById("title");
   let taskDescription = document.getElementById("description");
   let taskDueDate = document.getElementById("datePicker");
-
-  currentTask["title"] = taskTitle.value;
-  currentTask["description"] = taskDescription.value;
-  currentTask["category"] = document.getElementById("categoryEdit").innerText;
-  currentTask["prio"] = document.getElementById("prioValue").innerText;
-  currentTask["color"] = selectedColor;
-  currentTask["assignments"] = validateAssignmentForm();
-  currentTask["dueDate"] = taskDueDate.value;
+  
+  getCurrentTaskData(currentTask, taskTitle, taskDescription, taskDueDate);
   validateSubtasksForm(currentTask);
 
   const taskAddedElement = document.getElementById("taskAdded");
@@ -219,6 +245,24 @@ async function editTaskBoard(id) {
 
   await setItem("tasks", JSON.stringify(tasks));
   await setItem("toDo", JSON.stringify(toDo));
+}
+
+/**
+ * This function gets the data from the current task for editing
+ * 
+ * @param {int} currentTask 
+ * @param {string} taskTitle 
+ * @param {string} taskDescription 
+ * @param {date} taskDueDate 
+ */
+function getCurrentTaskData(currentTask, taskTitle, taskDescription, taskDueDate){
+  currentTask["title"] = taskTitle.value;
+  currentTask["description"] = taskDescription.value;
+  currentTask["category"] = document.getElementById("categoryEdit").innerText;
+  currentTask["prio"] = document.getElementById("prioValue").innerText;
+  currentTask["color"] = selectedColor;
+  currentTask["assignments"] = validateAssignmentForm();
+  currentTask["dueDate"] = taskDueDate.value;
 }
 
 /**
@@ -264,6 +308,24 @@ async function deleteAllTasksFromServer() {
  * @returns {void}
  */
 async function TaskButtonUrgent() {
+  setUrgentButtonColors();
+
+  // Setze das Bild für "Medium" zurück
+  let imageMedium = document.getElementById("imgMedium");
+  imageMedium.style.filter = "none";
+
+  // Setze das Bild für "Low" zurück
+  let imageLow = document.getElementById("imgLow");
+  imageLow.style.filter = "none";
+
+  let imageUrgent = document.getElementById("imgUrgent");
+  imageUrgent.style.filter = "brightness(10000%) contrast(1000%)";
+}
+
+/**
+ * This function handles the colors if the urgent button is active
+ */
+function setUrgentButtonColors(){
   let buttonUrgent = document.getElementById("prioUrgent");
   let buttonMedium = document.getElementById("prioMedium");
   let buttonLow = document.getElementById("prioLow");
@@ -276,17 +338,6 @@ async function TaskButtonUrgent() {
   buttonMedium.style.color = "black";
   buttonUrgent.style.color = "white";
   buttonLow.style.color = "black";
-
-  // Setze das Bild für "Medium" zurück
-  let imageMedium = document.getElementById("imgMedium");
-  imageMedium.style.filter = "none";
-
-  // Setze das Bild für "Low" zurück
-  let imageLow = document.getElementById("imgLow");
-  imageLow.style.filter = "none";
-
-  let imageUrgent = document.getElementById("imgUrgent");
-  imageUrgent.style.filter = "brightness(10000%) contrast(1000%)";
 }
 
 function getPrioStatus(prioStatus) {
@@ -304,18 +355,7 @@ function setPrioStatus(prioStatus) {
  * @returns {void}
  */
 async function TaskButtonMedium() {
-  let buttonUrgent = document.getElementById("prioUrgent");
-  let buttonMedium = document.getElementById("prioMedium");
-  let buttonLow = document.getElementById("prioLow");
-  buttonUrgent.style.backgroundColor = "white";
-  buttonMedium.style.backgroundColor = "#FFA800";
-  buttonUrgent.style.filter = "contrast(1)";
-  buttonMedium.style.filter = "contrast(1)";
-  buttonLow.style.filter = "contrast(1)";
-  buttonMedium.style.color = "white";
-  buttonUrgent.style.color = "black";
-  buttonLow.style.color = "black";
-  buttonLow.style.backgroundColor = "white";
+  setMediumButtonColors();
 
   // Setze das Bild für "Urgent" zurück
   let imageUrgent = document.getElementById("imgUrgent");
@@ -330,11 +370,47 @@ async function TaskButtonMedium() {
 }
 
 /**
+ * This function handles the colors if the medium button is active
+ */
+function setMediumButtonColors(){
+  let buttonUrgent = document.getElementById("prioUrgent");
+  let buttonMedium = document.getElementById("prioMedium");
+  let buttonLow = document.getElementById("prioLow");
+  buttonUrgent.style.backgroundColor = "white";
+  buttonMedium.style.backgroundColor = "#FFA800";
+  buttonUrgent.style.filter = "contrast(1)";
+  buttonMedium.style.filter = "contrast(1)";
+  buttonLow.style.filter = "contrast(1)";
+  buttonMedium.style.color = "white";
+  buttonUrgent.style.color = "black";
+  buttonLow.style.color = "black";
+  buttonLow.style.backgroundColor = "white";
+}
+
+/**
  * Sets the priority status of a task to "Low".
  *
  * @returns {void}
  */
 async function TaskButtonLow() {
+  setLowButtonColors();
+
+  // Setze das Bild für "Urgent" zurück
+  let imageUrgent = document.getElementById("imgUrgent");
+  imageUrgent.style.filter = "none";
+
+  // Setze das Bild für "Medium" zurück
+  let imageMedium = document.getElementById("imgMedium");
+  imageMedium.style.filter = "none";
+
+  let imageLow = document.getElementById("imgLow");
+  imageLow.style.filter = "brightness(10000%) contrast(1000%)";
+}
+
+/**
+ * This function handles the colors if the low button is active
+ */
+function setLowButtonColors(){
   let buttonUrgent = document.getElementById("prioUrgent");
   let buttonMedium = document.getElementById("prioMedium");
   let buttonLow = document.getElementById("prioLow");
@@ -347,17 +423,6 @@ async function TaskButtonLow() {
   buttonMedium.style.color = "black";
   buttonUrgent.style.color = "black";
   buttonLow.style.color = "white";
-
-  // Setze das Bild für "Urgent" zurück
-  let imageUrgent = document.getElementById("imgUrgent");
-  imageUrgent.style.filter = "none";
-
-  // Setze das Bild für "Medium" zurück
-  let imageMedium = document.getElementById("imgMedium");
-  imageMedium.style.filter = "none";
-
-  let imageLow = document.getElementById("imgLow");
-  imageLow.style.filter = "brightness(10000%) contrast(1000%)";
 }
 
 /**
@@ -413,26 +478,6 @@ function hideAddTaskPopUp() {
   overlay.style.display = "none";
 }
 
-function checkScreenWidth() {
-  document
-    .getElementById("editTaskPopUp")
-    .addEventListener("click", checkScreenWidth);
-
-  var screenWidth = window.innerWidth;
-
-  // Definiere die gewünschte Bildschirmbreite, ab der weitergeleitet wird
-  var targetWidth = 1351;
-
-  // Überprüfe, ob die Bildschirmbreite größer oder gleich der Zielbreite ist
-  if (screenWidth >= targetWidth) {
-    // Öffne das Pop-up-Fenster hier
-    showEditTaskPopUp();
-  } else {
-    // Leite zur anderen Seite weiter
-    window.location.href = "task_form.html";
-  }
-}
-
 /**
  * Function to show the edit task pop-up window.
  */
@@ -457,8 +502,19 @@ async function renderAssignableContacts() {
   for (let i = 0; i < users.length; i++) {
     const name = users[i]["name"];
     const id = users[i]["id"];
+    createContactDiv(name, id, assignableContactsContainer);
+  }
+}
 
-    const div = document.createElement("div");
+/**
+ * This function creates a new div for every assignable contact in the dropdown list
+ * 
+ * @param {string} name 
+ * @param {int} id 
+ * @param {obj} assignableContactsContainer 
+ */
+function createContactDiv(name, id, assignableContactsContainer) {
+  const div = document.createElement("div");
     div.className = "dropdown-object";
     div.addEventListener("click", function () {
       toggleCheckbox(id);
@@ -479,7 +535,6 @@ async function renderAssignableContacts() {
 
     div.appendChild(checkbox);
     assignableContactsContainer.appendChild(div);
-  }
 }
 
 /**

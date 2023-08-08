@@ -22,6 +22,9 @@ async function initBoard() {
 
 //############### LOADING FUNCTIONS ###############//
 
+/**
+ * This function loads the tasks from the toDo-section from the server
+ */
 async function loadtoDos() {
   try {
     toDo = JSON.parse(await getItem("toDo"));
@@ -30,6 +33,9 @@ async function loadtoDos() {
   }
 }
 
+/**
+ * This function loads the tasks from the inProgress-section from the server
+ */
 async function loadInProgress() {
   try {
     inProgress = JSON.parse(await getItem("inProgress"));
@@ -38,6 +44,9 @@ async function loadInProgress() {
   }
 }
 
+/**
+ * This function loads the tasks from the feedback-section from the server
+ */
 async function loadFeedback() {
   try {
     feedback = JSON.parse(await getItem("feedback"));
@@ -46,6 +55,9 @@ async function loadFeedback() {
   }
 }
 
+/**
+ * This function loads the tasks from the done-section from the server
+ */
 async function loadDone() {
   try {
     done = JSON.parse(await getItem("done"));
@@ -54,6 +66,9 @@ async function loadDone() {
   }
 }
 
+/**
+ * This function loads the usernames from the server
+ */
 async function loadUsers() {
   try {
     users = JSON.parse(await getItem("users"));
@@ -188,6 +203,23 @@ function showDetailCard(id) {
   // Clear the content of the overlay before adding the new popup
   overlay.innerHTML = "";
 
+  getTaskDetailCardData(id);
+
+  // Add an event listener to the overlay to close it when clicked
+  overlay.addEventListener("click", function (event) {
+    if (event.target === overlay) {
+      overlay.classList.add("d-none");
+      overlay.innerHTML = ""; // Clear the content of the overlay
+    }
+  });
+}
+
+/**
+ * This function is used to get the data of the task, specified by its id
+ *
+ * @param {int} id
+ */
+function getTaskDetailCardData(id) {
   for (let i = 0; i < tasks.length; i++) {
     if (tasks[i].id === id) {
       const task = tasks[i];
@@ -197,14 +229,6 @@ function showDetailCard(id) {
       showSubtasks(task);
     }
   }
-
-  // Add an event listener to the overlay to close it when clicked
-  overlay.addEventListener("click", function (event) {
-    if (event.target === overlay) {
-      overlay.classList.add("d-none");
-      overlay.innerHTML = ""; // Clear the content of the overlay
-    }
-  });
 }
 
 /**
@@ -353,6 +377,9 @@ function getTaskCardHTML(currentTask, status) {
     </div>`;
 }
 
+/**
+ * This function hides the overlay div
+ */
 function closePopup() {
   let overlay = document.getElementById("overlay");
   overlay.classList.add("d-none");
@@ -376,6 +403,11 @@ async function deleteTask(id) {
   initBoard();
 }
 
+/**
+ *This function handles the editing of a task
+ *
+ * @param {int} id
+ */
 function editTask(id) {
   currentTaskID = id;
   let currentTask = tasks.find((task) => task.id == id);
@@ -398,6 +430,19 @@ function showAssignedContacts(currentTask) {
     (assignment) => assignment["name"]
   );
 
+  getAssignedContactsData(assignableContactsContainer, assignedContacts);
+}
+
+/**
+ * This function handles the data for the assigned contacts of a task
+ *
+ * @param {object} assignableContactsContainer
+ * @param {Array} assignedContacts
+ */
+async function getAssignedContactsData(
+  assignableContactsContainer,
+  assignedContacts
+) {
   for (let i = 0; i < users.length; i++) {
     const name = users[i]["name"];
     const id = users[i]["id"];
@@ -407,14 +452,14 @@ function showAssignedContacts(currentTask) {
     checkbox.value = name;
     checkbox.dataset.id = id;
     checkbox.onclick = function (event) {
-      event.stopPropagation(); // Stoppe das Event-Bubbling
+      event.stopPropagation();
     };
 
-    // Überprüfe, ob der Kontakt ausgewählt ist
+    // Check if the contact is checked
     if (assignedContacts.includes(name)) {
       checkbox.checked = true;
     }
-
+    //create a new div for every assigned contact
     const div = document.createElement("div");
     div.className = "dropdown-object";
     div.onclick = function () {
@@ -528,24 +573,32 @@ function searchForTaskByInput() {
   search = search.toLowerCase();
 
   if (search.trim() === "") {
-    // Wenn das Suchfeld leer ist, zeige alle Aufgaben
+    // if input is empty show all tasks
     for (let i = 0; i < tasks.length; i++) {
       showHiddenTask(tasks[i]["id"]);
     }
   } else {
-    for (let i = 0; i < tasks.length; i++) {
-      const title = tasks[i]["title"];
-      const description = tasks[i]["description"];
+    checkInput(search);
+  }
+}
 
-      if (
-        title.toLowerCase().includes(search) ||
-        description.toLowerCase().includes(search)
-      ) {
-        showHiddenTask(tasks[i]["id"]);
-      } else {
-        console.log("removed task" + tasks[i]["id"]);
-        hideTask(tasks[i]["id"]);
-      }
+/**
+ * This function searches for matches between the input and the tasks
+ * 
+ * @param {object} search input field
+ */
+function checkInput(search){
+  for (let i = 0; i < tasks.length; i++) {
+    const title = tasks[i]["title"];
+    const description = tasks[i]["description"];
+
+    if (
+      title.toLowerCase().includes(search) ||
+      description.toLowerCase().includes(search)
+    ) {
+      showHiddenTask(tasks[i]["id"]);
+    } else {
+      hideTask(tasks[i]["id"]);
     }
   }
 }
