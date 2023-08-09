@@ -9,9 +9,12 @@ let sourceArray;
  * @param {string} status of the task
  */
 async function startDragging(id, status) {
+  let screenWidth = window.innerWidth;
   currentDraggedElement = id;
-  await showDropArea(status);
   await getSourceArrayByStatus(status, id);
+  if (screenWidth>1399) {
+    await showDropArea(status);
+  }
 }
 
 /**
@@ -196,6 +199,12 @@ async function moveToDone(targetArray) {
   isDropSuccessful = true;
   await deleteTaskFromDragged(targetArray);
   initBoard();
+}
+
+async function moveToResponsive(currentTask, status) {
+  //console.log(currentTask,status)
+  await startDragging(currentTask, status);
+  await moveTo(status);
 }
 
 /**

@@ -119,7 +119,6 @@ async function createGroupsByInitialLetter(sortedArray) {
 
     groupedContacts[firstLetter].push(sortedArray[i]);
   }
-  console.log(groupedContacts);
   await renderSortedContactGroups();
   return groupedContacts;
 }
@@ -131,7 +130,6 @@ async function renderSortedContactGroups() {
   let contactBox = document.getElementById("contactBox");
   for (let i = 0; i < Object.keys(groupedContacts).length; i++) {
     const letter = Object.keys(groupedContacts)[i];
-    console.log(letter);
     contactBox.innerHTML += `<div class="contact-letter">
       <span class="contact-single-letter">${letter}</span>
       <div class="contact-letter-container" id="group${letter}"></div>

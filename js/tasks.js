@@ -29,6 +29,9 @@ async function initTasks() {
 async function addNewTask(status) {
   await setNewTaskID();
   await loadtoDos();
+  await loadInProgress();
+  await loadFeedback();
+  await loadDone();
   let taskTitle = document.getElementById("title");
   let taskDescription = document.getElementById("description");
   let taskDueDate = document.getElementById("datePicker");
