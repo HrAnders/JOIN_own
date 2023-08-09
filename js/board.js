@@ -584,10 +584,10 @@ function searchForTaskByInput() {
 
 /**
  * This function searches for matches between the input and the tasks
- * 
+ *
  * @param {object} search input field
  */
-function checkInput(search){
+function checkInput(search) {
   for (let i = 0; i < tasks.length; i++) {
     const title = tasks[i]["title"];
     const description = tasks[i]["description"];

@@ -35,8 +35,28 @@ async function addNewTask(status) {
   let taskSub = document.getElementById("subtaskContent");
 
   checkTaskForm(taskTitle, taskDescription, taskDueDate, taskSub);
-  pushTaskData(taskTitle, taskDescription, taskDueDate)
-  await pushTaskToStatus(status);
+  pushTaskData(taskTitle, taskDescription, taskDueDate);
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlStatus = urlParams.get("status");
+  if (
+    urlStatus === "feedback" ||
+    urlStatus === "inProgress" ||
+    urlStatus === "done"
+  ) {
+    status = urlStatus;
+  }
+
+  eval(status).push(currentTaskID);
+
+  const taskAddedElement = document.getElementById("taskAdded");
+  taskAddedElement.classList.remove("d-none"); // Entferne die Klasse "d-none", um das Element anzuzeigen
+
+  setTimeout(() => {
+    taskAddedElement.classList.add("d-none"); // Füge die Klasse "d-none" hinzu, um das Element auszublenden
+    redirectToBoard(); // Rufe die Funktion zum Neuladen der Seite auf
+  }, 1000); // Warte vier Sekunden (4000 Millisekunden) und führe dann den Code im setTimeout-Callback aus
+
   await setItem("tasks", JSON.stringify(tasks));
   await setItem(status, JSON.stringify(eval(status)));
 }
@@ -102,34 +122,6 @@ function pushTaskData(taskTitle, taskDescription, taskDueDate){
     id: currentTaskID,
   });
 }
-
-/**
- * This function pushes the task to a certain status
- * 
- * @param {*} status 
- */
-async function pushTaskToStatus(status){
-  const urlParams = new URLSearchParams(window.location.search);
-  const urlStatus = urlParams.get("status");
-  if (
-    urlStatus === "feedback" ||
-    urlStatus === "inProgress" ||
-    urlStatus === "done"
-  ) {
-    status = urlStatus;
-  }
-
-  eval(status).push(currentTaskID);
-
-  const taskAddedElement = document.getElementById("taskAdded");
-  taskAddedElement.classList.remove("d-none"); // Entferne die Klasse "d-none", um das Element anzuzeigen
-
-  setTimeout(() => {
-    taskAddedElement.classList.add("d-none"); // Füge die Klasse "d-none" hinzu, um das Element auszublenden
-    redirectToBoard(); // Rufe die Funktion zum Neuladen der Seite auf
-  }, 1000); // Warte vier Sekunden (4000 Millisekunden) und führe dann den Code im setTimeout-Callback aus
-}
-
 
 
 /**

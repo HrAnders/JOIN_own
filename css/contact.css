@@ -195,6 +195,7 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   gap: 5px;
+  overflow: hidden;
 }
 
 #contactMail {
@@ -725,6 +726,7 @@ body {
 .avatar {
   margin-right: 50px;
   margin-left: 50px;
+  transform: translateY(-50px);
 }
 
 .input-add {
@@ -1209,8 +1211,7 @@ label {
   #overlay {
     flex-direction: column;
     align-items: center;
-    top: 45%;
-    height: 80vh;
+    height: 85vh;
   }
 
   .action-button-container {

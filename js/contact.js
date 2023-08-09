@@ -547,13 +547,13 @@ function getEditHTML(name, mail, tel, id) {
           <div class="form center">
             <form onsubmit="saveEditContact('${id}'); return false">
               <div class="center">
-                <input required type="text" class="addName" id="addNameID" placeholder="${name}" />
+                <input required type="text" class="addName" id="addNameID" value="${name}" />
               </div>
               <div class="center">
-                <input required type="email" class="addMail" id="addMailID" placeholder="${mail}" />
+                <input required type="email" class="addMail" id="addMailID" value="${mail}" />
               </div>
               <div class="center">
-                <input required type="number" class="addTel" id="addTelID" placeholder="${tel}" />
+                <input required type="number" class="addTel" id="addTelID" value="${tel}" />
               </div>
               <div class="add-close-btn-container">
                 <div class="cancel-btn" onclick="hideEditCard()">
