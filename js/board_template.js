@@ -145,11 +145,11 @@ function editTaskHTML(currentTask) {
               <input type="text" id="subtask-input-content" placeholder="Enter Subtask..."/>
   
               <div id="subtaskOninput" style="display: flex">
-                <img src="./assets/img/X.png" id="clearSubtaskInput" />
+                <img src="./assets/img/X.png" id="clearSubtaskInput" onclick="clearEditSubtasks('${currentTask["id"]}')"/>
                 <div class="border-subtask"></div>
                 <img
                   src="./assets/img/icon_check.svg"
-                  onclick="addSubtaskFromEdit('${currentTask["id"]}')"
+                  onclick="addSubtaskFromEdit('${currentTask["id"]}'); reloadSubtasks('${currentTask["id"]}')"
                   id="finishEditingSubtask"
                 />
               </div>
@@ -233,4 +233,95 @@ function getTaskDetailCardHTML(task, currentTask) {
           </div>
         </div>
       `;
+}
+
+/**
+ * Returns the HTML code for a task card.
+ *
+ * @param {*} currentTask - The current task.
+ * @param {*} status - The status of the task.
+ * @returns The HTML code of the task card.
+ */
+function getTaskCardHTML(currentTask, status) {
+  return /*html*/ `
+    <div
+  draggable="true"
+  class="board-task-card"
+  id="${currentTask["id"]}"
+  ondragstart="startDragging(${currentTask["id"]},'${status}')"
+  onclick="event.stopPropagation(); showDetailCard(${currentTask["id"]})"
+>
+  <div class="task-card-top-div">
+    <div
+      class="task-card-category"
+      id="taskCategoryContainer"
+      style="background-color:${currentTask["color"]}"
+    >
+      ${currentTask["category"]}
+    </div>
+    <div class="dropdown-position" onclick="event.stopPropagation();">
+      <select
+        class="dropdown-style"
+        onchange="event.stopPropagation(); startDragging(${
+          currentTask["id"]
+        }, '${status}'); moveTo(event.target.value)"
+      >
+        <option value="toDo" ${
+          status == "toDo" ? "selected" : ""
+        }>To Do</option>
+        <option value="inProgress" ${
+          status == "inProgress" ? "selected" : ""
+        }>In progress</option>
+        <option value="feedback" ${
+          status == "feedback" ? "selected" : ""
+        }>Awaiting feedback</option>
+        <option value="done" ${status == "done" ? "selected" : ""}>Done</option>
+      </select>
+    </div>
+  </div>
+  
+  <span class="task-card-title" id="taskTitleContainer">${
+    currentTask["title"]
+  }</span>
+  <div class="task-card-description" id="taskDescriptionContainer">${
+    currentTask["description"]
+  }</div>
+  
+  <div class="task-card-bottom-container align-center margin-bottom-10">
+    <!-- Überprüfung, ob Unteraufgaben vorhanden sind -->
+    <!-- Nur anzeigen, wenn Unteraufgaben vorhanden sind -->
+    ${
+      currentTask["taskSub"].length > 0
+        ? `
+      <div class="subtasks-border">
+        <div
+          id="subtasksStatus"
+          style="width:${
+            (currentTask["subtasksClosed"].length /
+              currentTask["taskSub"].length) *
+            100
+          }%"
+          class="subtasks-status"
+        ></div>
+      </div>
+      <span id="subtasksCounter">${currentTask["subtasksClosed"].length}/${
+            currentTask["taskSub"].length
+          } done</span>
+    `
+        : ""
+    }
+  </div>
+  
+  <div class="task-card-bottom-container">
+    <div class="avatar-Box" id="avatarBox${currentTask["id"]}"></div>
+    <div class="task-card-prio">
+      <img
+        id="imgUrgentTask"
+        src="./assets/img/icon_${currentTask["prio"]}.png"
+        alt=""
+      />
+    </div>
+  </div>
+</div>
+`;
 }

@@ -472,7 +472,6 @@
   align-items: flex-start;
   padding: 18px 36px;
   margin-bottom: 20px;
-  width: 15vw;
   height: 23vh;
   /* white */
 
@@ -654,7 +653,15 @@
 }
 
 .edit-subtask-container svg:hover{
-  background-color: #091931;
+  cursor: pointer;
+}
+
+.svg:hover path {
+  stroke: #29abe2;
+}
+
+.svg:hover rect {
+  stroke: #29abe2;
 }
 
 
@@ -663,9 +670,6 @@
 @media only screen and (max-width: 1777px) {
   .drop-area {
     align-items: flex-start;
-  }
-  .board-task-card {
-    width: 12vw;
   }
 }
 

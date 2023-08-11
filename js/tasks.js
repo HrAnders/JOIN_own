@@ -83,24 +83,22 @@ if (
   taskDescription.value === "" ||
   taskDueDate.value === "" ||
   currentPrioStatus === undefined ||
-  selectedCategory == undefined ||
-  taskSub.value === ""
+  selectedCategory == undefined
 ) {
   let taskAlert = document.getElementById("taskAlert");
   taskAlert.innerHTML = ""; 
   if (taskTitle.value === "")
-    taskAlert.innerHTML += "Feld 'Titel' muss ausgefüllt werden.<br>";
+    taskAlert.innerHTML += "Field 'Title' must be filled.<br>";
   if (taskDescription.value === "")
-    taskAlert.innerHTML += "Feld 'Beschreibung' muss ausgefüllt werden.<br>";
+    taskAlert.innerHTML += "Field 'Description' must be filled.<br>";
   if (taskDueDate.value === "")
     taskAlert.innerHTML +=
-      "Feld 'Fälligkeitsdatum' muss ausgefüllt werden.<br>";
+      "Field 'Due Date' must be filled.<br>";
   if (currentPrioStatus === undefined)
-    taskAlert.innerHTML += "Feld 'Priorität' muss ausgefüllt werden.<br>";
+    taskAlert.innerHTML += "A 'Prio' status must be checked.<br>";
   if (selectedCategory === undefined)
-    taskAlert.innerHTML += "Feld 'Category' muss ausgefüllt werden.<br>";
-  if (taskSub.value === "")
-    taskAlert.innerHTML += "Feld 'Unteraufgabe' muss ausgefüllt werden.<br>";
+    taskAlert.innerHTML += "Field 'Category' must be filled.<br>";
+  
     return; // Beende die Funktion, da nicht alle Felder ausgefüllt sind
 }
 else{
@@ -203,7 +201,7 @@ async function addSubtaskFromEdit(id) {
   currentTask["subtasksOpened"].push({
     task: task.value,
   });
-  await showTickableSubtasks(currentTask);
+  //await showTickableSubtasks(currentTask);
   task.value = "";
 }
 
@@ -250,6 +248,7 @@ async function editTaskBoard(id) {
 
   await setItem("tasks", JSON.stringify(tasks));
   await setItem("toDo", JSON.stringify(toDo));
+  await initBoard();
 }
 
 /**
