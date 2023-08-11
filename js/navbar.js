@@ -17,7 +17,8 @@ function toggleLogout() {
 /**
  * This function refers to the landing page
  */
-function logout() {
+async function logout() {
+  await localStorage.setItem("isLoggedIn", false);
   window.location.href = "index.html";
 }
 

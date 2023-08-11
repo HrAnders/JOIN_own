@@ -10,16 +10,17 @@
 }
 
 .Task-Content {
-  height: 700px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 730px;
   border-radius: 30px;
   width: 500px;
   background-color: white;
 }
 
 .Task-Bottom-Content {
-  position: fixed;
   margin-left: 350px;
-  margin-top: 8px;
 }
 
 .Task-Bottom-Content svg {

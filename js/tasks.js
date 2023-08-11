@@ -6,6 +6,7 @@ let currentPrioStatus;
 let selectedColor;
 let categories = [];
 let isNewCategoryOpened = false;
+let isTaskFormChecked = false;
 
 /**
  * Initializes the tasks by loading data, rendering assignable contacts, and rendering the category list.
@@ -38,30 +39,32 @@ async function addNewTask(status) {
   let taskSub = document.getElementById("subtaskContent");
 
   checkTaskForm(taskTitle, taskDescription, taskDueDate, taskSub);
-  pushTaskData(taskTitle, taskDescription, taskDueDate);
-
-  const urlParams = new URLSearchParams(window.location.search);
-  const urlStatus = urlParams.get("status");
-  if (
-    urlStatus === "feedback" ||
-    urlStatus === "inProgress" ||
-    urlStatus === "done"
-  ) {
-    status = urlStatus;
+  if (isTaskFormChecked) {
+    pushTaskData(taskTitle, taskDescription, taskDueDate);
+  
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlStatus = urlParams.get("status");
+    if (
+      urlStatus === "feedback" ||
+      urlStatus === "inProgress" ||
+      urlStatus === "done"
+    ) {
+      status = urlStatus;
+    }
+  
+    eval(status).push(currentTaskID);
+  
+    const taskAddedElement = document.getElementById("taskAdded");
+    taskAddedElement.classList.remove("d-none"); // Entferne die Klasse "d-none", um das Element anzuzeigen
+  
+    setTimeout(() => {
+      taskAddedElement.classList.add("d-none"); // Füge die Klasse "d-none" hinzu, um das Element auszublenden
+      redirectToBoard(); // Rufe die Funktion zum Neuladen der Seite auf
+    }, 1000); // Warte vier Sekunden (4000 Millisekunden) und führe dann den Code im setTimeout-Callback aus
+  
+    await setItem("tasks", JSON.stringify(tasks));
+    await setItem(status, JSON.stringify(eval(status)));
   }
-
-  eval(status).push(currentTaskID);
-
-  const taskAddedElement = document.getElementById("taskAdded");
-  taskAddedElement.classList.remove("d-none"); // Entferne die Klasse "d-none", um das Element anzuzeigen
-
-  setTimeout(() => {
-    taskAddedElement.classList.add("d-none"); // Füge die Klasse "d-none" hinzu, um das Element auszublenden
-    redirectToBoard(); // Rufe die Funktion zum Neuladen der Seite auf
-  }, 1000); // Warte vier Sekunden (4000 Millisekunden) und führe dann den Code im setTimeout-Callback aus
-
-  await setItem("tasks", JSON.stringify(tasks));
-  await setItem(status, JSON.stringify(eval(status)));
 }
 
 /**
@@ -80,12 +83,11 @@ if (
   taskDescription.value === "" ||
   taskDueDate.value === "" ||
   currentPrioStatus === undefined ||
-  selectedCategory === undefined ||
+  selectedCategory == undefined ||
   taskSub.value === ""
 ) {
-  // Zeige den Text im Div an, welches Feld ausgefüllt werden muss
   let taskAlert = document.getElementById("taskAlert");
-  taskAlert.innerHTML = ""; // Leere den vorherigen Text
+  taskAlert.innerHTML = ""; 
   if (taskTitle.value === "")
     taskAlert.innerHTML += "Feld 'Titel' muss ausgefüllt werden.<br>";
   if (taskDescription.value === "")
@@ -99,7 +101,10 @@ if (
     taskAlert.innerHTML += "Feld 'Category' muss ausgefüllt werden.<br>";
   if (taskSub.value === "")
     taskAlert.innerHTML += "Feld 'Unteraufgabe' muss ausgefüllt werden.<br>";
-  return; // Beende die Funktion, da nicht alle Felder ausgefüllt sind
+    return; // Beende die Funktion, da nicht alle Felder ausgefüllt sind
+}
+else{
+  isTaskFormChecked = true;
 }
 }
 
@@ -163,12 +168,17 @@ async function loadTasks() {
  */
 async function subTaskAddToJson() {
   let task = document.getElementById("subtask-input-content");
-
+  if(task.value.length<3){
+    task.style.fontsize="10px";
+    task.placeholder = "Type in more than 2 characters..."
+    return;
+  }
   subtasks.push({
     task: task.value,
   });
 
   addNewSubTask();
+  task.placeholder = "Enter subtask..."
   task.value = "";
 }
 
@@ -226,7 +236,7 @@ async function editTaskBoard(id) {
   let taskDueDate = document.getElementById("datePicker");
   
   getCurrentTaskData(currentTask, taskTitle, taskDescription, taskDueDate);
-  validateSubtasksForm(currentTask);
+  //validateSubtasksForm(currentTask);
 
   const taskAddedElement = document.getElementById("taskAdded");
   taskAddedElement.classList.remove("d-none"); // Entferne die Klasse "d-none", um das Element anzuzeigen
@@ -234,7 +244,7 @@ async function editTaskBoard(id) {
   setCategoryForEdit(currentTask);
 
   setTimeout(() => {
-    taskAddedElement.classList.add("d-none"); // Füge die Klasse "d-none" hinzu, um das Element auszublenden
+    //taskAddedElement.classList.add("d-none"); // Füge die Klasse "d-none" hinzu, um das Element auszublenden
     reloadPage(); // Rufe die Funktion zum Neuladen der Seite auf
   }, 1000);
 

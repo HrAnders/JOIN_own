@@ -234,7 +234,7 @@
   padding-top: 10px;
   padding-bottom: 60px;
   border: 3px dotted transparent;
-  min-height: 30vh;
+  min-height: 20vh;
 }
 
 .drop-area.dragover{
@@ -311,7 +311,7 @@
 /* Firefox */
 .inner-content2 {
   overflow: auto;
-  height: 440px;
+  height: 420px;
   gap: 20px;
   display: grid;
   align-items: start;
@@ -442,6 +442,27 @@
   border: 1px solid #ffffff;
 }
 
+/* Firefox */
+#description {
+  scrollbar-width: auto;
+  scrollbar-color: #2a3647 #f6f7f8;
+}
+
+/* Chrome, Edge, and Safari */
+#description::-webkit-scrollbar {
+  width: 10px;
+}
+
+#description::-webkit-scrollbar-track {
+  background: #f6f7f8;
+}
+
+#description::-webkit-scrollbar-thumb {
+  background-color: #2a3647;
+  border-radius: 10px;
+  border: 1px solid #ffffff;
+}
+
 /*Board-Card Design*/
 
 .board-task-card {
@@ -449,7 +470,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 18px 19px;
+  padding: 18px 36px;
   margin-bottom: 20px;
   width: 15vw;
   height: 23vh;
@@ -625,6 +646,17 @@
   width: 15vh;
 }
 
+.edit-subtask-container{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+}
+
+.edit-subtask-container svg:hover{
+  background-color: #091931;
+}
+
 
 /* ********* Breakpoints ********* */
 
@@ -639,7 +671,7 @@
 
 @media only screen and (max-width: 1555px) {
   .board-task-card {
-    width: 15vw;
+    width: 12vw;
     overflow: hidden;
   }
 }

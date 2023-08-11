@@ -155,7 +155,7 @@ function editTaskHTML(currentTask) {
               </div>
             </div>
   
-            <div class="subCon" id="subtaskContent">
+            <div class="subCon" id="subtasksContainer">
               
             </div>
   
@@ -180,7 +180,7 @@ function editTaskHTML(currentTask) {
  * @param {int} task 
  * @returns {html}
  */
-function getTaskDetailCardHTML(task) {
+function getTaskDetailCardHTML(task, currentTask) {
   return /*html*/ `
       
         <div class="Task-Content" id="taskContent">
@@ -188,7 +188,7 @@ function getTaskDetailCardHTML(task) {
           <div class="Task-Content-Top">
             <div class="flex-row justify-space-between">
               <div class="task-card-category" style="background-color:${task["color"]}">${task["category"]}</div>
-              <button class="close-btn" onclick="closePopup()">X</button>
+              <button class="close-btn" onclick="closePopup(); validateSubtasksForm(${task['id']})">X</button>
             </div>
             <span class="headline-text-popup">${task["title"]}</span>
             <div class="inner-content2">
@@ -203,7 +203,7 @@ function getTaskDetailCardHTML(task) {
             <div class="User-Area" id="assignDetail"></div>
             <div>
               <span class="font-weight-700">Subtasks:</span>
-              <ul class="subtasks-container" id="subtasksContainer"></ul>
+              <div class="subCon" id="subtaskContent"></div>
             </div>
           </div>
         </div>

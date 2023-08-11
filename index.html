@@ -14,8 +14,10 @@
     <link rel="icon" type="image/png" href="./assets/img/favicon.png" />
 
     <script src="./backend_new/storage_new.js"></script>
+    <script src="./js/script.js"></script>
     <script src="./js/login_new.js"></script>
     <script src="./js/contact.js"></script>
+
     <!-- 
     <link rel="./stylesheet" href="./css/navbar.css" />
 
@@ -117,7 +119,7 @@
               </div>
 
               <div class="login-guestlogin">
-                <button class="button hover-dark" style="width: 110px">
+                <button class="button hover-dark" style="width: 110px" type="submit">
                   Log in
                 </button>
                 <div
@@ -148,6 +150,7 @@
 
             <div class="headline-underline"></div>
             <form onsubmit="checkSignUp(); return false" class="form-style">
+              <div class="signup-input-container">
               <div class="signup-name-field">
                 <input
                   id="nameSignup"
@@ -209,7 +212,7 @@
                   src="./assets/img/pw-show-icon.svg"
                   style="cursor: pointer"
                 />
-              </div>
+              </div></div>
 
               <span
                 id="userExists"

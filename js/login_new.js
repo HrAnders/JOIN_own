@@ -36,7 +36,9 @@ async function login() {
   );
 
   if (user) {
+    isLoggedIn = true;
     await localStorage.setItem("activeUser", JSON.stringify(user.name));
+    await localStorage.setItem("isLoggedIn", true);
     checkViewPortAndRedirect();
     //window.location.href = "summary.html";
   } else {

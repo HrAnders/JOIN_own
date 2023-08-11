@@ -18,6 +18,14 @@ async function renderWithoutActiveSection() {
   renderUsername();
 }
 
+async function checkForLogIn(){
+  let isLoggedIn = await localStorage.getItem("isLoggedIn");
+  if(isLoggedIn == "false"){
+    alert("You must be logged in");
+      window.location.href = "index.html";
+  }
+}
+
 /**
  * This function loads all html templates (navbar and sidebar)
  */
