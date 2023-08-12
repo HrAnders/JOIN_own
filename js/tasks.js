@@ -239,6 +239,9 @@ async function editTaskBoard(id) {
   }
 }
 
+
+
+
 /**
  * This function gets the data from the current task for editing
  *
@@ -256,6 +259,7 @@ async function getCurrentTaskData(
   currentTask["title"] = taskTitle.value;
   currentTask["description"] = taskDescription.value;
   currentTask["category"] = document.getElementById("categoryEdit").innerText;
+  //selectedCategory = document.getElementById('dropdownMinCategory').innerText;
   currentTask["prio"] = document.getElementById("prioValue").innerText;
   currentTask["color"] = selectedColor;
   currentTask["assignments"] = validateAssignmentForm();
@@ -271,7 +275,7 @@ async function getCurrentTaskData(
 async function setCategoryForEdit(currentTask) {
   isCategoryChecked = false;
   document.getElementById("categoryMessage").innerHTML = "";
-  if (selectedCategory !== undefined) {
+  if (selectedCategory !== "" && selectedCategory !== undefined) {
     document.getElementById("categoryMessage").classList.add('d-none');
     isCategoryChecked = true;
     document.getElementById("categoryEdit").innerText = currentTask["category"];

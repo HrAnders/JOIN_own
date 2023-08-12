@@ -122,7 +122,7 @@ async function signUpNewUser() {
   let password = document.getElementById("passwordSignup");
   await setNewID();
 
-  pushNewUserData(name, email, password)
+  await pushNewUserData(name, email, password)
 
   resetForm(name, email, password);
 }
