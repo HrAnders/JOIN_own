@@ -342,7 +342,6 @@ function editTask(id) {
   document.getElementById("taskContent").innerHTML = editTaskHTML(currentTask);
   renderCategoryList();
   showAssignedContacts(currentTask);
-  setCategoryForEdit(currentTask);
   showSubtasks(currentTask);
 }
 

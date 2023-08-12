@@ -38,13 +38,14 @@ function editTaskHTML(currentTask) {
             >${currentTask["description"]}</textarea>
   
             <label>Category</label>
+            <div class="d-none" id="categoryMessage"></div>
   
             <div class="d-none" id = "categoryEdit"></div>
   
             <label
               id="toggleDrop"
               for="dropdown"
-              onclick="toggleDropdownCategory()"
+              onclick="toggleDropdownCategory() "
             >
               <div class="dropdown-min" id="dropdownMinCategory">
                 <span>${currentTask["category"]}</span>

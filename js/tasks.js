@@ -5,8 +5,8 @@ let selectedCategory;
 let currentPrioStatus;
 let selectedColor;
 let categories = [];
-let isNewCategoryOpened = false;
 let isTaskFormChecked = false;
+let isCategoryChecked = true;
 
 /**
  * Initializes the tasks by loading data, rendering assignable contacts, and rendering the category list.
@@ -41,7 +41,7 @@ async function addNewTask(status) {
   checkTaskForm(taskTitle, taskDescription, taskDueDate, taskSub);
   if (isTaskFormChecked) {
     pushTaskData(taskTitle, taskDescription, taskDueDate);
-  
+
     const urlParams = new URLSearchParams(window.location.search);
     const urlStatus = urlParams.get("status");
     if (
@@ -51,17 +51,17 @@ async function addNewTask(status) {
     ) {
       status = urlStatus;
     }
-  
+
     eval(status).push(currentTaskID);
-  
+
     const taskAddedElement = document.getElementById("taskAdded");
     taskAddedElement.classList.remove("d-none"); // Entferne die Klasse "d-none", um das Element anzuzeigen
-  
+
     setTimeout(() => {
       taskAddedElement.classList.add("d-none"); // Füge die Klasse "d-none" hinzu, um das Element auszublenden
       redirectToBoard(); // Rufe die Funktion zum Neuladen der Seite auf
     }, 1000); // Warte vier Sekunden (4000 Millisekunden) und führe dann den Code im setTimeout-Callback aus
-  
+
     await setItem("tasks", JSON.stringify(tasks));
     await setItem(status, JSON.stringify(eval(status)));
   }
@@ -69,51 +69,49 @@ async function addNewTask(status) {
 
 /**
  * This function checks if all input fields are filled
- * 
- * @param {string} taskTitle 
- * @param {string} taskDescription 
- * @param {string} taskDueDate 
- * @param {string} taskSub 
- * @returns 
+ *
+ * @param {string} taskTitle
+ * @param {string} taskDescription
+ * @param {string} taskDueDate
+ * @param {string} taskSub
+ * @returns
  */
-function checkTaskForm(taskTitle, taskDescription, taskDueDate, taskSub){
-// Überprüfung, ob alle Felder ausgefüllt sind
-if (
-  taskTitle.value === "" ||
-  taskDescription.value === "" ||
-  taskDueDate.value === "" ||
-  currentPrioStatus === undefined ||
-  selectedCategory == undefined
-) {
-  let taskAlert = document.getElementById("taskAlert");
-  taskAlert.innerHTML = ""; 
-  if (taskTitle.value === "")
-    taskAlert.innerHTML += "Field 'Title' must be filled.<br>";
-  if (taskDescription.value === "")
-    taskAlert.innerHTML += "Field 'Description' must be filled.<br>";
-  if (taskDueDate.value === "")
-    taskAlert.innerHTML +=
-      "Field 'Due Date' must be filled.<br>";
-  if (currentPrioStatus === undefined)
-    taskAlert.innerHTML += "A 'Prio' status must be checked.<br>";
-  if (selectedCategory === undefined)
-    taskAlert.innerHTML += "Field 'Category' must be filled.<br>";
-  
+function checkTaskForm(taskTitle, taskDescription, taskDueDate, taskSub) {
+  // Überprüfung, ob alle Felder ausgefüllt sind
+  if (
+    taskTitle.value === "" ||
+    taskDescription.value === "" ||
+    taskDueDate.value === "" ||
+    currentPrioStatus === undefined ||
+    selectedCategory == undefined
+  ) {
+    let taskAlert = document.getElementById("taskAlert");
+    taskAlert.innerHTML = "";
+    if (taskTitle.value === "")
+      taskAlert.innerHTML += "Field 'Title' must be filled.<br>";
+    if (taskDescription.value === "")
+      taskAlert.innerHTML += "Field 'Description' must be filled.<br>";
+    if (taskDueDate.value === "")
+      taskAlert.innerHTML += "Field 'Due Date' must be filled.<br>";
+    if (currentPrioStatus === undefined)
+      taskAlert.innerHTML += "A 'Prio' status must be checked.<br>";
+    if (selectedCategory === undefined)
+      taskAlert.innerHTML += "Field 'Category' must be filled.<br>";
+
     return; // Beende die Funktion, da nicht alle Felder ausgefüllt sind
-}
-else{
-  isTaskFormChecked = true;
-}
+  } else {
+    isTaskFormChecked = true;
+  }
 }
 
 /**
- * This function pushes the task data to the task array on server 
- * 
- * @param {string} taskTitle 
- * @param {string} taskDescription 
- * @param {date} taskDueDate 
+ * This function pushes the task data to the task array on server
+ *
+ * @param {string} taskTitle
+ * @param {string} taskDescription
+ * @param {date} taskDueDate
  */
-function pushTaskData(taskTitle, taskDescription, taskDueDate){
+function pushTaskData(taskTitle, taskDescription, taskDueDate) {
   tasks.push({
     title: taskTitle.value,
     description: taskDescription.value,
@@ -128,7 +126,6 @@ function pushTaskData(taskTitle, taskDescription, taskDueDate){
     id: currentTaskID,
   });
 }
-
 
 /**
  * Sets a new task ID by retrieving the current ID, incrementing it, and saving it.
@@ -166,9 +163,9 @@ async function loadTasks() {
  */
 async function subTaskAddToJson() {
   let task = document.getElementById("subtask-input-content");
-  if(task.value.length<3){
-    task.style.fontsize="10px";
-    task.placeholder = "Type in more than 2 characters..."
+  if (task.value.length < 3) {
+    task.style.fontsize = "10px";
+    task.placeholder = "Type in more than 2 characters...";
     return;
   }
   subtasks.push({
@@ -176,7 +173,7 @@ async function subTaskAddToJson() {
   });
 
   addNewSubTask();
-  task.placeholder = "Enter subtask..."
+  task.placeholder = "Enter subtask...";
   task.value = "";
 }
 
@@ -232,34 +229,30 @@ async function editTaskBoard(id) {
   let taskTitle = document.getElementById("title");
   let taskDescription = document.getElementById("description");
   let taskDueDate = document.getElementById("datePicker");
-  
-  getCurrentTaskData(currentTask, taskTitle, taskDescription, taskDueDate);
-  //validateSubtasksForm(currentTask);
-
-  const taskAddedElement = document.getElementById("taskAdded");
-  taskAddedElement.classList.remove("d-none"); // Entferne die Klasse "d-none", um das Element anzuzeigen
-
-  setCategoryForEdit(currentTask);
-
-  setTimeout(() => {
-    //taskAddedElement.classList.add("d-none"); // Füge die Klasse "d-none" hinzu, um das Element auszublenden
-    reloadPage(); // Rufe die Funktion zum Neuladen der Seite auf
-  }, 1000);
-
-  await setItem("tasks", JSON.stringify(tasks));
-  await setItem("toDo", JSON.stringify(toDo));
-  await initBoard();
+  await getCurrentTaskData(currentTask, taskTitle, taskDescription, taskDueDate);
+  await setCategoryForEdit(currentTask);
+  if (isCategoryChecked) {
+    await setItem("tasks", JSON.stringify(tasks));
+    await setItem("toDo", JSON.stringify(toDo));
+    await initBoard();
+    reloadPage();
+  }
 }
 
 /**
  * This function gets the data from the current task for editing
- * 
- * @param {int} currentTask 
- * @param {string} taskTitle 
- * @param {string} taskDescription 
- * @param {date} taskDueDate 
+ *
+ * @param {int} currentTask
+ * @param {string} taskTitle
+ * @param {string} taskDescription
+ * @param {date} taskDueDate
  */
-function getCurrentTaskData(currentTask, taskTitle, taskDescription, taskDueDate){
+async function getCurrentTaskData(
+  currentTask,
+  taskTitle,
+  taskDescription,
+  taskDueDate
+) {
   currentTask["title"] = taskTitle.value;
   currentTask["description"] = taskDescription.value;
   currentTask["category"] = document.getElementById("categoryEdit").innerText;
@@ -270,13 +263,22 @@ function getCurrentTaskData(currentTask, taskTitle, taskDescription, taskDueDate
 }
 
 /**
- * Sets the category for editing a task.
+ * Sets the category for editing a task and checks if a readable value is in the input field.
  *
  * @param {object} currentTask - The current task being edited.
  * @returns {Promise<void>} A promise that resolves once the category is set.
  */
 async function setCategoryForEdit(currentTask) {
-  document.getElementById("categoryEdit").innerText = currentTask["category"];
+  isCategoryChecked = false;
+  document.getElementById("categoryMessage").innerHTML = "";
+  if (selectedCategory !== undefined) {
+    document.getElementById("categoryMessage").classList.add('d-none');
+    isCategoryChecked = true;
+    document.getElementById("categoryEdit").innerText = currentTask["category"];
+  } else {
+    document.getElementById("categoryMessage").classList.remove('d-none');
+    document.getElementById("categoryMessage").innerHTML = "Please choose a category by name and color. Confirm your choice.";
+  }
 }
 
 /**
@@ -329,7 +331,7 @@ async function TaskButtonUrgent() {
 /**
  * This function handles the colors if the urgent button is active
  */
-function setUrgentButtonColors(){
+function setUrgentButtonColors() {
   let buttonUrgent = document.getElementById("prioUrgent");
   let buttonMedium = document.getElementById("prioMedium");
   let buttonLow = document.getElementById("prioLow");
@@ -376,7 +378,7 @@ async function TaskButtonMedium() {
 /**
  * This function handles the colors if the medium button is active
  */
-function setMediumButtonColors(){
+function setMediumButtonColors() {
   let buttonUrgent = document.getElementById("prioUrgent");
   let buttonMedium = document.getElementById("prioMedium");
   let buttonLow = document.getElementById("prioLow");
@@ -414,7 +416,7 @@ async function TaskButtonLow() {
 /**
  * This function handles the colors if the low button is active
  */
-function setLowButtonColors(){
+function setLowButtonColors() {
   let buttonUrgent = document.getElementById("prioUrgent");
   let buttonMedium = document.getElementById("prioMedium");
   let buttonLow = document.getElementById("prioLow");
@@ -512,33 +514,33 @@ async function renderAssignableContacts() {
 
 /**
  * This function creates a new div for every assignable contact in the dropdown list
- * 
- * @param {string} name 
- * @param {int} id 
- * @param {obj} assignableContactsContainer 
+ *
+ * @param {string} name
+ * @param {int} id
+ * @param {obj} assignableContactsContainer
  */
 function createContactDiv(name, id, assignableContactsContainer) {
   const div = document.createElement("div");
-    div.className = "dropdown-object";
-    div.addEventListener("click", function () {
-      toggleCheckbox(id);
-    });
+  div.className = "dropdown-object";
+  div.addEventListener("click", function () {
+    toggleCheckbox(id);
+  });
 
-    const span = document.createElement("span");
-    span.innerText = name;
-    div.appendChild(span);
+  const span = document.createElement("span");
+  span.innerText = name;
+  div.appendChild(span);
 
-    const checkbox = document.createElement("input");
-    checkbox.id = id;
-    checkbox.type = "checkbox";
-    checkbox.value = name;
-    checkbox.dataset.id = id;
-    checkbox.addEventListener("click", function (event) {
-      event.stopPropagation();
-    });
+  const checkbox = document.createElement("input");
+  checkbox.id = id;
+  checkbox.type = "checkbox";
+  checkbox.value = name;
+  checkbox.dataset.id = id;
+  checkbox.addEventListener("click", function (event) {
+    event.stopPropagation();
+  });
 
-    div.appendChild(checkbox);
-    assignableContactsContainer.appendChild(div);
+  div.appendChild(checkbox);
+  assignableContactsContainer.appendChild(div);
 }
 
 /**
@@ -560,7 +562,7 @@ function renderCategoryList() {
   );
   categoryListContainer.innerHTML = "";
   categoryListContainer.innerHTML += `
-  <div class="dropdown-object" onclick="renderNewCategoryField(); toggleDropdownCategory()">
+  <div class="dropdown-object" onclick="renderNewCategoryField()">
     <div id="newCategory">New category</div>  
   </div>
 
@@ -587,19 +589,31 @@ function renderCategoryList() {
  */
 function renderNewCategoryField() {
   let dropdownField = document.getElementById("dropdownMinCategory");
-  isNewCategoryOpened = true;
   document.getElementById("select-color-category").classList.remove("d-none");
 
   dropdownField.innerHTML = /*html*/ `
     <div class="flex-row space-between align-center">
     <input placeholder="Enter new category" id="new-category" class="category-input" onclick="stopDropdown(event)">
 
-      <div class="flex-row align-center height-100">
-      <img src="./assets/img/close-button-addtask.svg" onclick="clearSelections(); toggleDropdownCategory()">
+      <div class="flex-row align-center height-100 categoryBtns">
+
+      <svg onclick="clearSelections(); toggleDropdownCategory()" width="24" height="24" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22.9616 7.65405L7.65385 22.9618" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
+        <path d="M22.8172 23.1062L7.50944 7.79844" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+
+
 
         <div class="vert-border"></div>
-        <button class="newCategory" onclick="checkNewCategory(); stopDropdown(event);" type="button"><img
-        src="assets/img/check-addtask.svg"></button>
+          <svg onclick="checkNewCategory(); stopDropdown(event);" width="24" height="30" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <mask id="mask0_75592_9963" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="24">
+            <rect x="0.144531" width="24" height="24" fill="#D9D9D9"/>
+            </mask>
+            <g mask="url(#mask0_75592_9963)">
+            <path d="M9.69474 15.15L18.1697 6.675C18.3697 6.475 18.6072 6.375 18.8822 6.375C19.1572 6.375 19.3947 6.475 19.5947 6.675C19.7947 6.875 19.8947 7.1125 19.8947 7.3875C19.8947 7.6625 19.7947 7.9 19.5947 8.1L10.3947 17.3C10.1947 17.5 9.96141 17.6 9.69474 17.6C9.42807 17.6 9.19474 17.5 8.99474 17.3L4.69474 13C4.49474 12.8 4.3989 12.5625 4.40724 12.2875C4.41557 12.0125 4.51974 11.775 4.71974 11.575C4.91974 11.375 5.15724 11.275 5.43224 11.275C5.70724 11.275 5.94474 11.375 6.14474 11.575L9.69474 15.15Z" fill="#2A3647"/>
+            </g>
+          </svg>
+      
       </div>
     </div>
   `;
@@ -675,7 +689,6 @@ function saveSelectedCategory(element, color) {
   let dropdownMin = document.getElementById("dropdownMinCategory");
   dropdownMin.querySelector("span").innerText = selectedCategory;
   selectedColor = color;
-  toggleDropdownCategory();
 }
 
 /**
@@ -685,16 +698,6 @@ function toggleDropdown() {
   let dropdownContent = document.getElementById("dropdownContent");
   let dropdownMin = document.getElementById("dropdownMin");
 
-  dropdownContent.classList.toggle("show");
-  dropdownMin.classList.toggle("open");
-}
-
-/**
- * Toggles the visibility of the category dropdown menu.
- */
-function toggleDropdownCategory() {
-  let dropdownContent = document.getElementById("dropdownCategoryContent");
-  let dropdownMin = document.getElementById("dropdownMinCategory");
   dropdownContent.classList.toggle("show");
   dropdownMin.classList.toggle("open");
 }

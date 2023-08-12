@@ -163,6 +163,8 @@ body {
 .newCategory {
   border: none;
   background-color: white;
+  cursor: pointer;
+  border-radius: 100%;
 }
 
 #datePicker {

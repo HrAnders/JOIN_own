@@ -28,7 +28,10 @@
     <script src="./js/tasks.js"></script>
     <script src="./js/board.js"></script>
   </head>
-  <body onload="checkForLogIn();includeHTML(); initTasks()" style="background-color: #f5f5f5">
+  <body
+    onload="checkForLogIn();includeHTML(); initTasks()"
+    style="background-color: #f5f5f5"
+  >
     <div
       class="sidebar-container"
       w3-include-html="./assets/templates_html/sidebar_template.html"
@@ -51,7 +54,10 @@
 
       <div class="task-Alert" id="taskAlert"></div>
 
-      <form class="column-container" onsubmit="addNewTask('toDo') ; return false">
+      <form
+        class="column-container"
+        onsubmit="addNewTask('toDo') ; return false"
+      >
         <div class="column-left">
           <label>Title</label>
 
@@ -73,12 +79,12 @@
 
           <div class="d-none" id="categoryEdit"></div>
 
-          <label
-            id="toggleDrop"
-            for="dropdown"
-            onclick="toggleDropdownCategory()"
-          >
-            <div class="dropdown-min" id="dropdownMinCategory">
+          <label id="toggleDrop" for="dropdown">
+            <div
+              class="dropdown-min"
+              id="dropdownMinCategory"
+              onclick="toggleDropdownCategory()"
+            >
               <span>Select category</span>
               <img src="./assets/img/arrow_down_black.svg" alt="" />
             </div>
@@ -186,17 +192,51 @@
             />
 
             <div id="subtaskOninput" style="display: flex">
-              <img
-                src="./assets/img/X.png"
-                onclick="subTaskDelete()"
-                id="clearSubtaskInput"
-              />
+              <div class="categoryBtns">
+                <svg
+                  onclick="subTaskDelete()"
+                  id="clearSubtaskInput"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 31 31"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M22.9616 7.65405L7.65385 22.9618"
+                    stroke="#2A3647"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M22.8172 23.1062L7.50944 7.79844"
+                    stroke="#2A3647"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </div>
+
               <div class="border-subtask"></div>
-              <img
-                src="./assets/img/icon_check.svg"
-                onclick="subTaskAddToJson()"
+
+              <svg
                 id="finishEditingSubtask"
-              />
+                onclick="subTaskAddToJson()"
+                width="24"
+                height="24"
+                viewBox="0 0 70 70"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle cx="35.25" cy="35" r="34.5" fill="#2A3647" />
+                <path
+                  d="M20.2783 35.0001L31.5071 46.0662L50.2217 23.9341"
+                  stroke="white"
+                  stroke-width="7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
             </div>
           </div>
 

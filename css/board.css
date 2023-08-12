@@ -101,6 +101,25 @@
   stroke: #29abe2;
 }
 
+.categoryBtns{
+  cursor: pointer;
+}
+
+.categoryBtns svg:hover path{
+  stroke: #29abe2;
+  fill: #29abe2;
+}
+
+.categoryBtns svg:hover rect{
+  fill: #29abe2;
+}
+
+#finishEditingSubtask:hover circle{
+  cursor: pointer;
+  stroke: #29abe2;
+  fill: #29abe2;
+}
+
 .inputTask {
   box-sizing: border-box;
 
