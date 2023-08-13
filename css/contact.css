@@ -395,6 +395,14 @@ body {
   justify-content: space-between;
 }
 
+.add-close-button-edit {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 30px;
+}
+
 .add-close-btn-container {
   display: flex;
   width: 100%;
@@ -402,14 +410,6 @@ body {
   justify-content: flex-end;
   gap: 30px;
   padding-right: 20px;
-}
-
-.add-close-button-edit {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 30px;
 }
 
 .close-btn:hover path {
