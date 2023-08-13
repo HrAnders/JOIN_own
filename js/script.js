@@ -18,12 +18,15 @@ async function renderWithoutActiveSection() {
   renderUsername();
 }
 
-async function checkForLogIn(){
+async function checkForLogIn() {
   let isLoggedIn = await localStorage.getItem("isLoggedIn");
-  if(isLoggedIn == "false"){
-    alert("You must be logged in");
-      window.location.href = "index.html";
+  if (isLoggedIn == "false") {
+    redirectToLogin();
   }
+}
+
+async function redirectToLogin() {
+  window.location.href = "index.html";
 }
 
 /**
@@ -41,13 +44,12 @@ async function includeHTML() {
       element.innerHTML = "Page not found";
     }
   }
-  
 }
 
 /**
  * This function is used to delete all registered users from the server
  */
-async function deleteAllUsersFromServer(){
+async function deleteAllUsersFromServer() {
   try {
     users = JSON.parse(await getItem("users"));
     users = [];

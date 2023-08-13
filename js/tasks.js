@@ -28,19 +28,13 @@ async function initTasks() {
  * @returns {Promise<void>} A promise that resolves once the new task is added.
  */
 async function addNewTask(status) {
-  await setNewTaskID();
-  await loadtoDos();
-  await loadInProgress();
-  await loadFeedback();
-  await loadDone();
-  let taskTitle = document.getElementById("title");
-  let taskDescription = document.getElementById("description");
-  let taskDueDate = document.getElementById("datePicker");
-  let taskSub = document.getElementById("subtaskContent");
+  await getCurrentData();
+  let taskData = new Object();
+  await getTaskValues(taskData);
 
-  checkTaskForm(taskTitle, taskDescription, taskDueDate, taskSub);
+  checkTaskForm(taskData);
   if (isTaskFormChecked) {
-    pushTaskData(taskTitle, taskDescription, taskDueDate);
+    pushTaskData(taskData);
 
     const urlParams = new URLSearchParams(window.location.search);
     const urlStatus = urlParams.get("status");
@@ -54,17 +48,48 @@ async function addNewTask(status) {
 
     eval(status).push(currentTaskID);
 
-    const taskAddedElement = document.getElementById("taskAdded");
-    taskAddedElement.classList.remove("d-none"); // Entferne die Klasse "d-none", um das Element anzuzeigen
-
-    setTimeout(() => {
-      taskAddedElement.classList.add("d-none"); // Füge die Klasse "d-none" hinzu, um das Element auszublenden
-      redirectToBoard(); // Rufe die Funktion zum Neuladen der Seite auf
-    }, 1000); // Warte vier Sekunden (4000 Millisekunden) und führe dann den Code im setTimeout-Callback aus
-
-    await setItem("tasks", JSON.stringify(tasks));
-    await setItem(status, JSON.stringify(eval(status)));
+    await pushNewTaskToServer(status);
   }
+}
+
+/**
+ * This function is called to retrieve the current task values from the input fields
+ *
+ * @param {obj} taskData
+ */
+async function getTaskValues(taskData) {
+  taskData.taskTitle = document.getElementById("title");
+  taskData.taskDescription = document.getElementById("description");
+  taskData.taskDueDate = document.getElementById("datePicker");
+  taskData.taskSub = document.getElementById("subtaskContent");
+}
+
+/**
+ * This function loads the current tasks data from the server for easier adding.
+ */
+async function getCurrentData() {
+  await setNewTaskID();
+  await loadtoDos();
+  await loadInProgress();
+  await loadFeedback();
+  await loadDone();
+}
+
+/**
+ * This function pushes the new task to the server and redirects to the board.html
+ *
+ * @param {string} status of the task
+ */
+async function pushNewTaskToServer(status) {
+  const taskAddedElement = document.getElementById("taskAdded");
+  taskAddedElement.classList.remove("d-none");
+  setTimeout(() => {
+    taskAddedElement.classList.add("d-none"); // Füge die Klasse "d-none" hinzu, um das Element auszublenden
+    redirectToBoard(); // Rufe die Funktion zum Neuladen der Seite auf
+  }, 1000); // Warte vier Sekunden (4000 Millisekunden) und führe dann den Code im setTimeout-Callback aus
+
+  await setItem("tasks", JSON.stringify(tasks));
+  await setItem(status, JSON.stringify(eval(status)));
 }
 
 /**
@@ -76,22 +101,22 @@ async function addNewTask(status) {
  * @param {string} taskSub
  * @returns
  */
-function checkTaskForm(taskTitle, taskDescription, taskDueDate, taskSub) {
+function checkTaskForm(taskData) {
   // Überprüfung, ob alle Felder ausgefüllt sind
   if (
-    taskTitle.value === "" ||
-    taskDescription.value === "" ||
-    taskDueDate.value === "" ||
+    taskData.taskTitle.value === "" ||
+    taskData.taskDescription.value === "" ||
+    taskData.taskDueDate.value === "" ||
     currentPrioStatus === undefined ||
     selectedCategory == undefined
   ) {
     let taskAlert = document.getElementById("taskAlert");
     taskAlert.innerHTML = "";
-    if (taskTitle.value === "")
+    if (taskData.taskTitle.value === "")
       taskAlert.innerHTML += "Field 'Title' must be filled.<br>";
-    if (taskDescription.value === "")
+    if (taskData.taskDescription.value === "")
       taskAlert.innerHTML += "Field 'Description' must be filled.<br>";
-    if (taskDueDate.value === "")
+    if (taskData.taskDueDate.value === "")
       taskAlert.innerHTML += "Field 'Due Date' must be filled.<br>";
     if (currentPrioStatus === undefined)
       taskAlert.innerHTML += "A 'Prio' status must be checked.<br>";
@@ -111,15 +136,15 @@ function checkTaskForm(taskTitle, taskDescription, taskDueDate, taskSub) {
  * @param {string} taskDescription
  * @param {date} taskDueDate
  */
-function pushTaskData(taskTitle, taskDescription, taskDueDate) {
+function pushTaskData(taskData) {
   tasks.push({
-    title: taskTitle.value,
-    description: taskDescription.value,
+    title: taskData.taskTitle.value,
+    description: taskData.taskDescription.value,
     category: selectedCategory,
     prio: currentPrioStatus,
     color: selectedColor,
     assignments: validateAssignmentForm(),
-    dueDate: taskDueDate.value,
+    dueDate: taskData.taskDueDate.value,
     taskSub: subtasks,
     subtasksOpened: subtasks,
     subtasksClosed: [],
@@ -229,7 +254,12 @@ async function editTaskBoard(id) {
   let taskTitle = document.getElementById("title");
   let taskDescription = document.getElementById("description");
   let taskDueDate = document.getElementById("datePicker");
-  await getCurrentTaskData(currentTask, taskTitle, taskDescription, taskDueDate);
+  await getCurrentTaskData(
+    currentTask,
+    taskTitle,
+    taskDescription,
+    taskDueDate
+  );
   await setCategoryForEdit(currentTask);
   if (isCategoryChecked) {
     await setItem("tasks", JSON.stringify(tasks));
@@ -238,9 +268,6 @@ async function editTaskBoard(id) {
     reloadPage();
   }
 }
-
-
-
 
 /**
  * This function gets the data from the current task for editing
@@ -274,15 +301,38 @@ async function getCurrentTaskData(
  */
 async function setCategoryForEdit(currentTask) {
   isCategoryChecked = false;
+  let newCategoryField = document.getElementById("new-category");
   document.getElementById("categoryMessage").innerHTML = "";
   if (selectedCategory !== "" && selectedCategory !== undefined) {
-    document.getElementById("categoryMessage").classList.add('d-none');
-    isCategoryChecked = true;
-    document.getElementById("categoryEdit").innerText = currentTask["category"];
+    if (newCategoryField) {
+      await checkNewCategoryField(currentTask)
+    } else {
+      await confirmNewCategory(currentTask);
+    }
   } else {
-    document.getElementById("categoryMessage").classList.remove('d-none');
-    document.getElementById("categoryMessage").innerHTML = "Please choose a category by name and color. Confirm your choice.";
+    rejectNewCategory();
   }
+}
+
+async function confirmNewCategory(currentTask){
+  document.getElementById("categoryMessage").classList.add("d-none");
+  document.getElementById("categoryEdit").innerText =currentTask["category"];
+  isCategoryChecked = true;
+}
+
+function rejectNewCategory(){
+  document.getElementById("categoryMessage").classList.remove("d-none");
+    document.getElementById("categoryMessage").innerHTML =
+      "Please choose a category by name and color. Confirm your choice.";
+}
+
+async function checkNewCategoryField(currentTask) {
+  await checkNewCategory();
+      if (isCategoryChecked) {
+        confirmNewCategory(currentTask);
+      } else {
+        rejectNewCategory()
+      }
 }
 
 /**
@@ -786,9 +836,10 @@ function selectColor(id) {
  * Calls createNewCategory() if a color is selected and a category name is entered.
  * Otherwise, displays an alert message and hides the label.
  */
-function checkNewCategory() {
+async function checkNewCategory() {
   const newCategoryInput = document.getElementById("new-category");
   const categoryDisplay = document.getElementById("categoryDisplay");
+  const categoryMessage = document.getElementById("categoryMessage");
   const dataField = document.getElementById("categoryEdit");
 
   if (selectedColor && newCategoryInput.value !== "") {
@@ -796,6 +847,10 @@ function checkNewCategory() {
     dataField.innerText = newCategoryInput.value;
     hideErrorMessage();
     hideSelectColor();
+    isCategoryChecked = true;
+    if (categoryMessage) {
+      categoryMessage.innerHTML = "";
+    }
   } else {
     displayErrorMessage("Please insert a category name and a color!");
   }
@@ -812,9 +867,12 @@ function checkNewCategory() {
  * @param {string} message - The error message to display.
  */
 function displayErrorMessage(message) {
-  const errorMessage = document.createElement("span");
-  errorMessage.textContent = message;
-  document.getElementById("errorMessage").appendChild(errorMessage);
+  const errorMessage = document.getElementById("errorMessage");
+  errorMessage.innerHTML = "";
+  errorMessage.innerHTML = `
+    <span>${message}</span>
+  `
+  
 }
 
 function hideLabel() {

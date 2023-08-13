@@ -640,6 +640,7 @@
 .task-card-top-div {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
   width: 100%;
 }
 
@@ -683,6 +684,13 @@
   stroke: #29abe2;
 }
 
+#add-task-btn-board-mobile {
+  display: none;
+}
+
+#add-task-btn-board-{
+  display: flex;
+}
 
 /* ********* Breakpoints ********* */
 
@@ -701,7 +709,7 @@
 
 @media only screen and (max-width: 1400px) {
   .drop-area {
-    align-items: center;
+    display: none;
   }
 
   .dropdown-position {
@@ -718,7 +726,7 @@
   }
 
   .board-content-element {
-    width: calc(90% - 26px);
+    width: 100%;
   }
 
   .board-main-container {
@@ -733,7 +741,7 @@
 
 @media only screen and (max-width: 950px) {
   .board-content {
-    width: 100%;
+    width: 90%;
   }
 
   .board-main-container {
@@ -758,12 +766,20 @@
 }
 
 @media only screen and (max-width: 756px) {
+  #add-task-btn-board {
+    display: none;
+  }
+
+  #add-task-btn-board-mobile {
+    display: flex;
+  }
+
   .board-main-container {
     grid-column: 1/11;
   }
 
   .board-task-card {
-    width: 78vw;
+    width: 73vw;
   }
 
   .inner-content {
@@ -786,22 +802,8 @@
 }
 
 @media only screen and (max-width: 555px) {
-  #add-task-btn-board {
-    display: none;
-  }
-
-  #add-task-btn-board-mobile {
-    display: flex;
-  }
-}
-
-@media only screen and (min-width: 556px) {
-  #add-task-btn-board {
-    display: flex;
-  }
-
-  #add-task-btn-board-mobile {
-    display: none;
+  .board-task-card{
+    width: 60vw;
   }
 }
 
@@ -810,9 +812,7 @@
     display: flex;
   }
 
-  .board-task-card{
-    width: 60vw;
-  }
+  
 }
 
 @media only screen and (min-width: 501px) {
@@ -823,6 +823,6 @@
 
 @media only screen and (max-width: 450px) {
   .dropdown-style{
-    width: 120px;
+    width: 75px;
   }
 }

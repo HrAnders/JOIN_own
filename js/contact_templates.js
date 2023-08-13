@@ -216,7 +216,7 @@ function giveContactListHTML(name, mail, id) {
                   <input required type="email" class="addMail" id="addMailID" value="${mail}" />
                 </div>
                 <div class="center">
-                  <input required type="number" class="addTel" id="addTelID" value="${tel}" />
+                  <input type="number" class="addTel" id="addTelID" value="${tel}" />
                 </div>
                 <div class="add-close-btn-container">
                   <div class="cancel-btn" onclick="hideEditCard()">

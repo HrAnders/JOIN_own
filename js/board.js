@@ -340,6 +340,7 @@ function editTask(id) {
   currentTaskID = id;
   let currentTask = tasks.find((task) => task.id == id);
   document.getElementById("taskContent").innerHTML = editTaskHTML(currentTask);
+  selectedCategory = currentTask['category'];
   renderCategoryList();
   showAssignedContacts(currentTask);
   showSubtasks(currentTask);

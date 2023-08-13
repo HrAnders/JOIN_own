@@ -108,3 +108,11 @@
     margin-left: 183px;
   }
 }
+
+@media(max-height:760px){
+  .Task-Content{
+    height: 100vh;
+    overflow: scroll;
+    justify-content: unset;
+  }
+}

@@ -68,6 +68,7 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   margin-bottom: 20px;
+  padding-right: 10px;
 }
 
 .headline-text {
@@ -208,7 +209,8 @@ body {
 input[type="date"]::-webkit-calendar-picker-indicator {
   width: 20px;
   height: 20px;
-  margin-left: 250px;
+  margin-right: 10px;
+  cursor: pointer;
 }
 
 input[type="date"]::-webkit-datetime-edit-fields-wrapper {

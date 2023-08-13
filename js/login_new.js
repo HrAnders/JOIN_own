@@ -40,7 +40,6 @@ async function login() {
     await localStorage.setItem("activeUser", JSON.stringify(user.name));
     await localStorage.setItem("isLoggedIn", true);
     checkViewPortAndRedirect();
-    //window.location.href = "summary.html";
   } else {
     document.getElementById("userNotFound").classList.remove("d-none");
     email.value = "";
@@ -104,6 +103,8 @@ function checkViewPortAndRedirect() {
  */
 async function guestLogin() {
   let guest = { name: "Guest" };
+  isLoggedIn = true;
+  await localStorage.setItem("isLoggedIn", true);
   await localStorage.setItem("activeUser", JSON.stringify(guest.name));
   if (document.body.clientWidth > 1024) {
     window.location.href = "summary.html";

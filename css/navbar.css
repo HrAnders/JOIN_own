@@ -198,3 +198,9 @@ html {
     margin-left: 30px;
   }
 }
+
+@media (max-height: 760px) {
+  .nav-profil{
+    padding: 3px;
+  }
+}
