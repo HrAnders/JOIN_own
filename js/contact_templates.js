@@ -120,9 +120,6 @@ function giveContactListHTML(name, mail, id) {
             <div id="nameCircle" style="background-color: ${color}">${initials}</div>
             <div class="flex-column">
               <span id="nameDetailCard">${name}</span>
-              <div id="addTaskPopUp" onclick="checkScreenWidth()">
-                <img src="./assets/img/add_task_contacts.svg" alt="" class="cursor-pointer" />
-              </div>
             </div>
           </div>
   
