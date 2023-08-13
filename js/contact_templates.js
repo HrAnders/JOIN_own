@@ -218,7 +218,7 @@ function giveContactListHTML(name, mail, id) {
                 <div class="center">
                   <input type="number" class="addTel" id="addTelID" value="${tel}" />
                 </div>
-                <div class="add-close-btn-container">
+                <div class="add-close-button-edit">
                   <div class="cancel-btn" onclick="hideEditCard()">
                     <span class="font-size-21">Cancel</span>
                     <svg
